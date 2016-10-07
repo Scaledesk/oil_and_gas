@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
-from web.views import register
+from .views import CompanyView
 
 urlpatterns = [
-    url(r'^register/', register),
+    url(r'^register/', CompanyView.as_view()),
 ]
