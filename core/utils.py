@@ -1,6 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
+from core.managers import CompanyModelManager
+from core.models import CompanyModal
+
 
 def authenticate_user(username,password):
     """util function for authenticating the user"""
@@ -25,3 +28,7 @@ def change_password(username,password):
     return True
 
 
+def registerCompany(**kaargs):
+    objects = CompanyModelManager()
+    is_created, response_text, company = CompanyModal.objects.create_company(**kaargs)
+    return is_created, response_text
