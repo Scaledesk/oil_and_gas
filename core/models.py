@@ -1,9 +1,13 @@
 from __future__ import unicode_literals
 
+from django.contrib.auth.models import User
+
 from django.db import models
 
 # Create your models here.
 import datetime
+
+from core.managers import CompanyModelManager
 from test_sub.settings import SERIALIZABLE_VALUE
 
 
@@ -32,27 +36,15 @@ class BaseModel(models.Model):
         abstract=True
 class CompanyModal(BaseModel):
     """Company Model Profile"""
+    # custom manager for thne company model
+    objects = CompanyModelManager()
     WHERE_YOU_HEARD_ABT_US_CHOICES = (
         ('blog', 'Blog'),
         ('website', 'Website'),
         ('advert', 'Advertisement'),
         ('social_media', 'Social Media'),
     )
-    company_name=models.CharField(max_length=150, blank=False)
-    email=models.CharField(max_length=150,blank=False)
-    phone_number=models.CharField(max_length=11,blank=True)
-    where_heard_abt_us=models.CharField(max_length=1,choices=WHERE_YOU_HEARD_ABT_US_CHOICES,default='advert')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    company_name = models.CharField(max_length=150, blank=False)
+    email = models.CharField(max_length=150, blank=False)
+    ad_reference = models.CharField(max_length=500, choices=WHERE_YOU_HEARD_ABT_US_CHOICES, default='advert')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
