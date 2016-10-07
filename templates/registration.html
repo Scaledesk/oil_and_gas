@@ -4,50 +4,55 @@
     <div class="row">
         <div class="col-md-6 p-10 o-form">
             <div class="">
-                <form class="form-horizontal">
+                <form class="form-horizontal" action="/web/register/" method="post">
+                    {% csrf_token %}
                     <p class="text-center">Join Us Now..!</p>
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="company">Company</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="" placeholder="Enter Company Name" required>
+                            <input type="text" class="form-control" id="" placeholder="Enter Company Name"
+                                   name="company_name" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="company">Name</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="" placeholder="Enter your Name">
+                            <input type="text" class="form-control" id="" placeholder="Enter your Name" name="username">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="email">Email:</label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" required
+                                   name="company_email">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="company">How did you hear about us?
                         </label>
                         <div class="col-sm-8">
-                            <select>
-                                <option>Select your option</option>
-                                <option>Newspaper</option>
-                                <option>Internet</option>
-                                <option>Social Networking</option>
-                                <option>Other</option>
+                            <select name="ad_reference">
+                                <option value="">Select your option</option>
+                                <option value="advert">Newspaper</option>
+                                <option value="website">Internet</option>
+                                <option value="social_media">Social Networking</option>
+                                <option value="blog">Other</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="pwd">Password</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" id="pwd" placeholder="Enter password" required>
+                            <input type="password" class="form-control" id="pwd" placeholder="Enter password" required
+                                   name="password">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="">Confirm Password</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" id="" placeholder="Re-Enter your Password" required>
+                            <input type="password" class="form-control" id="" placeholder="Re-Enter your Password"
+                                   required name="confirm_password">
                         </div>
                     </div>
                     <div class="form-group">
