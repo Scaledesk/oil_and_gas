@@ -1,4 +1,6 @@
-from django.forms import forms
+from django.core.exceptions import ValidationError
+
+from django import forms
 
 
 class BaseForm(forms.Form):
@@ -19,18 +21,40 @@ class BaseForm(forms.Form):
             return False
         else:
             return True
-class LoginUserForm(BaseForm):
-    """
-    Form for handling the incoming user form
-    """
-    username=forms.CharField(label="Username")
-    password=forms.CharField(label="Password")
 
-class RegisterUserForm(BaseForm):
-    """
-    Form for handling the incoming user registration
-    """
-    name=forms.CharField(label="Name")
-    email=forms.CharField(label="Email")
-    password=forms.CharField(label="Password")
-    mobile=forms.charField(label="Mobile")
+
+# class LoginUserForm(BaseForm):
+#     """
+#     Form for handling the incoming user form
+#     """
+#     username=forms.CharField(label="Username")
+#     password=forms.CharField(label="Password")
+#
+# class RegisterUserForm(BaseForm):
+#     """
+#     Form for handling the incoming user registration
+#     """
+#     name=forms.CharField(label="Name")
+#     email=forms.CharField(label="Email")
+#     password=forms.CharField(label="Password")
+#     mobile=forms.CharField(label="Mobile")
+
+class CompanyRegistrationForm(forms.Form):
+    """Forms for handeling the post request from the company registration form"""
+    company_name = forms.CharField(label="Company Name")
+    company_email = forms.CharField(label="Company Email")
+    username = forms.CharField(label="Name")
+    Ad_CHOICES = (
+        ('blog', 'Blog'),
+        ('website', 'Website'),
+        ('advert', 'Advertisement'),
+        ('social_media', 'Social Media'),
+    )
+    ad_reference = forms.ChoiceField(choices=Ad_CHOICES, required=True, label='How did you hear about us?')
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
+    confirm_password = forms.CharField(widget=forms.PasswordInput(), label="confirm_password")
+
+    def clean(self):
+        cleaned_data = super(CompanyRegistrationForm, self).clean()
+        if not cleaned_data.get('password') == cleaned_data.get('confirm_password'):
+            raise ValidationError(("password and confirm password are do not match"), code="invalid")
