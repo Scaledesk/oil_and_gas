@@ -12,8 +12,11 @@ class CompanyModelManager(Manager):
             user = User.objects.create_user(kaargs.get("company_email"), kaargs.get("company_email"),
                                             kaargs.get("password"))
             user.first_name = kaargs.get("username").split()[0]
-            if kaargs.get("username").split()[1]:
-                user.last_name = kaargs.get("username").split()[1]
+            try:
+                if kaargs.get("username").split()[1]:
+                    user.last_name = kaargs.get("username").split()[1]
+            except:
+                pass
             user.save()
             # return  False, "User Does Not exist", None
         company = self.create(company_name=kaargs.get("company_name"), email=kaargs.get("company_email"),
