@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container text-style bg">
+        <div class="row">
+            <div class="col-md-6 p-10 o-form">
+                <div class="">
+                    <form class="form-horizontal" action="/web/register/" method="post">
+                        {% csrf_token %}
+                        <p class="text-center">Join Us Now..!</p>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="company">Company</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" placeholder="Enter Company Name"
+                                       name="company_name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="company">Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="" placeholder="Enter your Name"
+                                       name="username">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Email:</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" id="email" placeholder="Enter email" required
+                                       name="company_email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="company">How did you hear about us?
+                            </label>
+                            <div class="col-sm-8">
+                                <select name="ad_reference">
+                                    <option value="">Select your option</option>
+                                    <option value="advert">Newspaper</option>
+                                    <option value="website">Internet</option>
+                                    <option value="social_media">Social Networking</option>
+                                    <option value="blog">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="pwd">Password</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="pwd" placeholder="Enter password"
+                                       required
+                                       name="password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="">Confirm Password</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="" placeholder="Re-Enter your Password"
+                                       required name="confirm_password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-8">
+                                <div class="checkbox">
+                                    <label><input type="checkbox"> I agree to the terms and conditions</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-8">
+                                <button type="submit" class="btn btn-default">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 p-50">
+                <div>
+                    <p class="o-head">OIL & GAS</p>
+                </div>
+                <div>
+                    <p class="o-sub-head">Why Join Oil & Gas</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi architecto atque est eveniet
+                        fuga inventore iusto libero maiores, nihil numquam porro sed veritatis, voluptatibus voluptatum?
+                        Harum hic id similique.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad alias aliquid architecto beatae
+                        eaque eius enim fugit labore laboriosam minus molestiae nam odio, quae quis ratione sit, tenetur
+                        voluptas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
