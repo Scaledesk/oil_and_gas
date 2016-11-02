@@ -34,3 +34,5 @@ class CompanyView(View):
                                                         ad_reference=form.cleaned_data['ad_reference'], user_id=None,
                                                         username=form.cleaned_data['username'])
             return HttpResponse(response_text)
+        else:
+            return render(request, "registration.html", {'form': CompanyRegistrationForm(),'errors':form.errors['__all__']})
