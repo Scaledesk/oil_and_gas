@@ -48,3 +48,17 @@ class CompanyModal(BaseModel):
     email = models.CharField(max_length=150, blank=False)
     ad_reference = models.CharField(max_length=500, choices=WHERE_YOU_HEARD_ABT_US_CHOICES, default='advert')
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_claimed = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
+    
+    def request_claim(self,user):
+        """method to make the claimrequest object sa==ajnd save it to the db"""
+        from .models import ClaimRequest
+        ClaimRequest.objects.create(company=self, user=user)
+    
+
+class ClaimRequest(BaseModel):
+    """Claim requests by the users"""
+    company =  models.ForeignKey(CompanyModal, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_accepted = models.BooleanField(default = False)
