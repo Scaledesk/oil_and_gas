@@ -6,6 +6,9 @@
             <div class="">
                 <form class="form-horizontal" action="/web/register/" method="post">
                     {% csrf_token %}
+                    {% for e in errors %}
+                        {{ e }}
+                    {% endfor %}
                     <p class="text-center">Join Us Now..!</p>
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="company">Company</label>
