@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="text-center">Company Detail</h1>
+    <div class="col-md-offset-3 col-md-6">
+
+        {% if error %}
+        {% for errors in error %}
+        <p class="text-danger">{{ errors }}</p>
+        {% endfor %}
+        {% endif %}
+
+        <form class="form-login custom-form-login" method="post" action="/web/check_company/" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="company_name">Company Name:</label>
+                {{ form.company_name|attr:"class:form-control"|attr:"id:company_name"|attr:"type:text"|attr:"style:text-transform:uppercase"|attr:"required:true"|attr:"autocomplete:off" }}
+            </div>
+            <input type="button" name="click" value="search" onclick="CompanyCheck();" />
+        </form>
+
+    </div>
+   
+    {% block custom_script %}
+    <script>
+     function CompanyCheck()
+     {
+        // data
+        var csrftoken = Cookies.get('csrftoken'); 
+        var c_name = document.getElementById("company_name").value;
+        // alert(csrftoken);
+        // alert(c_name);
+        data = {
+            'csrfmiddlewaretoken':csrftoken,
+            'company_name':c_name
+        }
+        // alert(data['company_name']);
+        // alert(data['csrfmiddlewaretoken']);
+        $.ajax(
+        {
+            type: "POST",
+            url : "/web/check_company/",
+            // dataType: "json",
+            data: data,
+            success: function(data){
+                alert(data);
+            },
+            error: function(xhr,status,error){
+                alert(xhr.responseText+" "+error);
+
+            }
+        });
+    }
+    </script>
+    {% endblock %}
+    
+{% endblock %}

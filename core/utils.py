@@ -23,5 +23,3 @@ def change_password(username,password):
     current_user.set_password(password)
     current_user.save()
     return True
-
-

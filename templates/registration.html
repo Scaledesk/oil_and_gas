@@ -1,8 +1,95 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
+
+
+
 {% block content %}
-    <div>
-<h1>
-    this is the content of the registration page
-</h1>
-    </div>
+    <<div id="container">
+                {% csrf_token %}
+
+                <div class="rows">
+                        <h1>User Detail</h1>
+                </div>
+
+                <div class="rows">
+                        <div class="col-md-6">
+                        <label for="first_name">First Name:</label>
+                        {{ form.first_name|attr:"class:form-control"|attr:"id:first_name"|attr:"type:text"|attr:"required:true"|attr:"autocomplete:off" }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="last_name">Last Name:</label>
+                        {{ form.last_name|attr:"class:form-control"|attr:"type:text"|attr:"required:true"|attr:"autocomplete:off" }}
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="id_gender">Gender:</label>
+                        {{ form.gender |attr:"required:true"|attr:"autocomplete:off"}}
+                    </div>                    
+                    <div class="col-md-6">
+                        <label for="id_dob">Date of birth:</label>
+                        {{form.dob|attr:"required:true"|attr:"autocomplete:off"}}
+                    </div>
+                </div>
+
+                <br>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="user_email">Email:</label><br>
+                        {{ form.user_email|attr:"class:form-control"|attr:"type:email"|attr:"required:true"|attr:"autocomplete:off" }}
+                    </div>
+                    <div>
+                        <label for="id_phone_no">Phone No (XXXXXXXXXX):</label>
+                    <div>
+                </div>
+
+                <br><hr><br>
+
+                <div class="rows">
+                        <h1>Company Detail</h1>
+                </div>        
+
+                
+                <br>
+
+                <div class="row">
+                     <div class="rows">
+                        <div class="col-md-12">
+                        <label for="company_name">Company Name:</label>
+                        {{ form.company_name|attr:"class:form-control"|attr:"id:company_name"|attr:"type:text"|attr:"style:text-transform:uppercase"|attr:"required:true"|attr:"autocomplete:off" }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_where_heard_abt_us">Where you heard about us ?:</label><br>
+                        {{ form.where_heard_abt_us|attr:"class:form-control"|attr:"autocomplete:off" }}
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="company_email">Conpany Email:</label><br>
+                        {{ form.company_email|attr:"class:form-control"|attr:"type:email"|attr:"required:true"|attr:"autocomplete:off" }}
+                    </div>
+                    <div>
+                        <label for="id_phone_no">Company Phone No (XXXXXXXXXX):</label>
+                        {{ form.company_phone_no|attr:"required:true"|attr:"autocomplete:off"|attr:"type:text"|attr:"maxlength:10"|attr:"pattern:[789][0-9]{9}"|attr:"title:The given phone number is not valid indian mobile no."}}
+                    <div>
+                </div>
+
+                <div id="lower text-center">
+                    <button class="btn ladda-button btn-theme btn-block" data-style="slide-right" style="color: #2A3542"><span class="ladda-label">Submit</span></button>
+                    <br><hr><br>
+                    <div class="text-center">
+                        Already Registered ?<br/>
+                        <p ><a href="/">Click Here to Login</a></p>
+                    </div>                       
+                    <div id="lower text-center">
+                        <br>
+                        <button class="btn ladda-button btn-theme btn-block" data-style="slide-right" style="color: #2A3542"><span class="ladda-label">Save & Next</span></button>
+                    </div><!--/ lower-->
+            </div>>
 {% endblock %}
