@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oil and Gas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/static/js.cookie.js"></script>
+</head>
+<body>
+{% block content %}
+<input type="text" name="search" id="company_selector" />
+
+{% block custom_script %}
+<script type="text/javascript">
+
+// function searchOpen() {
+//     var search = $('#txtSearch').val()
+//     var data = {
+//         search: search
+//     };
+//     $.ajax({
+//         url: '/web/search_company',
+//         data: data,
+//         dataType: 'jsonp',
+//         jsonp: 'callback',
+//         jsonpCallback: 'searchResult'
+//     });
+// }
+
+
+// function searchResult(data) {
+//     $( "#txtSearch" ).autocomplete ({
+//         source: data
+//     });
+// }
+
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+
+<script>
+        $(document).ready(function () {
+            $("#company_selector").keypress(function () {
+                var value_l = $("#company_selector").val();
+                if (value_l.length >= 1) {
+                    $.get("/web/search_company", function (data) {
+                        var $input = $('#company_selector');
+                        $input.typeahead({
+                            source: data, autoSelect: false, displayText: function (item) {
+                                return item;
+                            }, afterSelect: function (current) {
+                                // console.log("dadqwf");
+                                // var curr_company = current.company;
+                                // $input.val(curr_company);
+                                // $.blockUI();
+
+                                // $.ajax({
+                                //     url: "/web/get/company/location/" + curr_company,
+                                //     method: "GET",
+                                //     success: function (data) {
+                                //         var curr_data = JSON.parse(data);
+
+                                //         $("#order_location").val(curr_data.location);
+
+                                //         $.unblockUI();
+                                //     },
+                                //     error: function () {
+                                //         $.unblockUI();
+                                //         $.notify("Error occured while fetching location");
+                                //     }
+
+                                // })
+
+                            }
+                        });
+                    }, 'json');
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+{% endblock content %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

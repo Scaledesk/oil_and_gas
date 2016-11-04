@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oil and Gas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/static/js.cookie.js"></script>
+</head>
+<body>
+{% block content %}
+<div id="search" class="cd-main-search">
+        <form>
+            <input id="search_input" type="search" placeholder="Search for Company" autocomplete="off">
+        </form>
+
+        <div class="cd-search-suggestions">
+            <div class="news">
+
+                <ul id="search_container">
+
+                </ul>
+            </div> 
+        </div> <!-- .cd-search-suggestions -->
+
+        <a href="#0" class="close cd-text-replace">Close Form</a>
+    </div>
+
+
+
+
+
+    {% block custom_script %}
+    <script>
+     function CompanyCheck()
+     {
+        // data
+        var csrftoken = Cookies.get('csrftoken'); 
+        var c_name = document.getElementById("company_name").value;
+        data = {
+            'csrfmiddlewaretoken':csrftoken,
+            'company_name':c_name
+        }
+        $.ajax(
+        {
+            type: "POST",
+            url : "/web/check_company/",
+            data: data,
+            success: function(data){
+                alert(data);
+            },
+            error: function(xhr,status,error){
+                alert(xhr.responseText+" "+error);
+            }
+        });
+    }
+    </script>
+    {% endblock %}
+
+
+{% endblock content %}
+</body>
+</html>

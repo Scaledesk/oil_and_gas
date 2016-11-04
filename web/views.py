@@ -3,6 +3,10 @@ from web.forms import RegisterUserForm, AddCompanyForm, RegisterUserAndCompany
 from web.utils import CreateCompanyUtil,  CreateUserUtil, CreateCompanyUtil, CreateUserProfileUtil,CreateUserAndCompany
 from django.template import RequestContext
 from pprint import pprint
+# from django.utils import simplejson
+import json as simplejson
+
+from core.models import *
 
 
 def Register(request):
@@ -62,4 +66,25 @@ def CheckCompany(request):
         # pass
         return HttpResponse("abcaaa")
 
+
+def SearchCompany(request):
+    search_qs = CompanyModel.objects.filter(owner=UserProfile.objects.filter(user=User.objects.filter(is_superuser=True)))
+    results = []
+    for r in search_qs:
+        results.append(r.company_name)
+    # pprint(str(request.GET['callback']))
+    # resp = request.GET['callback'] + '(' + simplejson.dumps(results) + ');'
+    resp = simplejson.dumps(results)
+    pprint(resp)
+    return HttpResponse(resp, content_type='application/json')
+
+
+
+def Test(request):
+    if request.method == 'GET':
+        return render(request, 'test.html', None)
+
+def Test2(request):
+    if request.method == 'GET':
+        return render(request, 'test2.html', None)
 

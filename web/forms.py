@@ -96,10 +96,13 @@ class RegisterUserAndCompany(BaseForm):
             raise forms.ValidationError('Last Name you have entered is invalid')
 
         if self.user_email_already_exists(cleaned_data.get('user_email')):
-            raise forms.ValidationError('Email Id provided already exists in database. Use different Email Id')
+            raise forms.ValidationError('User Email Id provided already exists in database. Use different Email Id')
 
         if self.is_phone_no_invalid(cleaned_data['user_phone_no']):
             raise forms.ValidationError('The user phone number provided is invalid')
+
+        if self.user_email_already_exists(cleaned_data['user_phone_no']):
+            raise forms.ValidationError('The user phone number provided already exist in the database')
 
         if cleaned_data.get('password') != cleaned_data.get('confirm_password'):
             raise forms.ValidationError('Passwords cannot be different')
@@ -109,7 +112,7 @@ class RegisterUserAndCompany(BaseForm):
 
         # COMPANY #
         if self.company_email_already_exists(cleaned_data['company_email']):
-            raise forms.ValidationError('Email Id provided already exists in database. Use different Email Id')
+            raise forms.ValidationError('Company Email Id provided already exists in database. Use different Email Id')
         
 
         if self.is_phone_no_invalid(cleaned_data['company_phone_no']):
