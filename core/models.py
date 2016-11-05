@@ -70,12 +70,7 @@ class CompanyModel(BaseModel):
 
 class ClaimRequest(BaseModel):
     """Claim requests by the users"""
-
-    SUBSCRIPTION_OPTIONS = (
-        ('BSC', 'Basic'),
-        ('STD', 'Standard'),
-        ('PRO', 'Pro'),
-        ('PRE', 'Social Media'),)
+    
     company =  models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default = False)

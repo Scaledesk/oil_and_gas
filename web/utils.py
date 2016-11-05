@@ -40,7 +40,16 @@ def CreateCompanyUtil(data_dict):
     cm.save()
     return True
 
-def CreateUserAndCompany(data_dict):
+def ClaimCompanyRequestUtil(user, company):
+    """
+    Util funciton to save claim request by a particular user to database
+    """
+    cr = user
+    cr.company = company
+    cr.save()
+    return True
+
+def CreateUserAndCompanyUtil(data_dict):
     """
     Util function for user, user profile and company. Returns true if executed sucessfully.
     """
@@ -50,4 +59,17 @@ def CreateUserAndCompany(data_dict):
                 return True
     else:
         return False
-    # return (CreateUserUtil(data_dict) and CreateUserProfileUtil(data_dict) and CreateCompanyUtil(data_dict))
+
+def CreateUserAndClaimCompanyUtil(data_dict, company):
+    """
+    Util function for createing a new user and than save his request to claim the company.
+    """
+    user = None
+    if CreateUserUtil(data_dict):
+        user = UserProfile.objects.get(user=User.objects.get(email=data_dict['user_email']))
+        if ClaimCompanyRequestUtil(user, company):
+            return True
+        else:
+            False
+    else:
+        False

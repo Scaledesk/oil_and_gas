@@ -1,0 +1,129 @@
+    
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+
+
+{% block content %}
+
+
+<input type="text" name="search" id="company_selector" />
+
+
+
+<form class="form-login custom-form-login" method="post" action="create_edu_qual">
+
+    {% csrf_token %}
+
+    <h2 class="form-login-heading">Claim Company</h2>
+    <div class="login-wrap">
+        <!-- Begin Page Content -->
+        <div id="container">
+            {% csrf_token %}
+            <div id="dummyform"></div>
+            <input type="button" id="addQualification" value="Click to Add Qualification" style="float: right;"/>
+            <div id="lower text-center">
+                <input class="form-control btn-success" type="submit" value="Save & Next"/>
+            </div>
+        </div><!--/ container-->
+        <!-- End Page Content -->
+    </div>
+
+    {% block custom_script %}
+
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#company_selector").keypress(function () {
+                var value_l = $("#company_selector").val();
+                if (value_l.length >= 1) {
+                    $.get("/web/search_company2", function (data) {
+                        var $input = $('#company_selector');
+                        $input.typeahead({
+                            source: data, autoSelect: false, displayText: function (item) {
+                                return item;
+                            }, afterSelect: function (current) {
+
+
+
+                                dataType : 'html',
+                                $("#dummyform").hide();
+                                $("#submit_form").hide();
+                                $(document).ready(function(){
+                                    $("#addQualification").click(function() {
+                                        $("#dummyform").append(
+                                            '{% csrf_token %}'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="first_name">First Name:</label>'+
+                                            '{{ form.first_name|attr:"class:form-control"|attr:"id:first_name"|attr:"type:text"|attr:"style:text-transform:uppercase"|attr:"required:true"|attr:"autocomplete:off" }}'+
+                                            '</div>'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="last_name">Last Name:</label>'+
+                                            '{{ user_form.last_name|attr:"class:form-control"|attr:"id:last_name"|attr:"type:text"|attr:"style:text-transform:uppercase"|attr:"required:true"|attr:"autocomplete:off" }}'+
+                                            '</div>'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="id_gender">Gender:</label>'+
+                                            '{{ user_form.gender|attr:"class:form-control"|attr:"required:true"|attr:"autocomplete:off"}}'+
+                                            '</div>'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="id_dob">Date of birth:</label>'+
+                                            '{{user_form.dob|attr:"class:form-control"|attr:"type:date"|attr:"required:true"|attr:"autocomplete:off"}}'+
+                                            '</div>'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="user_email">User Email:</label><br>'+
+                                            '{{ user_form.user_email|attr:"class:form-control"|attr:"type:email"|attr:"required:true"|attr:"autocomplete:off" }}'+
+                                            '</div>'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="id_user_phone_no">User Phone No (XXXXXXXXXX):</label>'+
+                                            '{{ user_form.user_phone_no|attr:"class:form-control"|attr:"required:true"|attr:"autocomplete:off"|attr:"type:text"|attr:"maxlength:10"|attr:"pattern:[789][0-9]{9}"|attr:"title:The given phone number is not valid indian mobile no."}}'+
+                                            '</div>'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="password">Password:</label>'+
+                                            '{{ user_form.password|attr:"class:form-control"|attr:"type:password"|attr:"required:true"|attr:"autocomplete:off" }}'+
+                                            '</div>'+
+
+
+                                            '<div class="form-group">'+
+                                            '<label for="password">Confirm Password:</label>'+
+                                            '{{ user_form.confirm_password|attr:"class:form-control"|attr:"type:password"|attr:"required:true"|attr:"autocomplete:off" }}'+
+
+                                            '</div>'
+
+                                            );
+                                    });
+                                });
+                                
+
+
+                            }
+                        });
+}, 'json');
+}
+});
+});
+</script>
+
+{% endblock %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -137,43 +137,6 @@ class AddCompanyForm(BaseForm):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class RegisterUserForm(BaseForm):
     """
     Form for user registration/creating account
@@ -187,8 +150,9 @@ class RegisterUserForm(BaseForm):
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length= 30)
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
+    dob = forms.DateField()
     user_email = forms.EmailField()
-    phone_number = forms.CharField(max_length=10)
+    user_phone_no = forms.CharField(max_length=10)
     password = forms.CharField(max_length = 50)
     confirm_password = forms.CharField(max_length=50)
 
@@ -196,7 +160,7 @@ class RegisterUserForm(BaseForm):
     def clean(self, *args, **kwargs):
         """Clean function"""
 
-        cleaned_data = super(RegistrationForm, self).clean()
+        cleaned_data = super(RegisterUserForm, self).clean()
 
         if self.is_name_invalid(cleaned_data.get('first_name')):
             raise forms.ValidationError('First Name you have entered is invalid')
