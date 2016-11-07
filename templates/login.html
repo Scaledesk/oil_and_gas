@@ -1,0 +1,100 @@
+    
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+
+
+{% block content %}
+
+
+<div class="container">
+
+    <h1 class="text-center">User and Company Details</h1>
+    <div class="col-md-offset-3 col-md-6">
+
+
+
+        <form class="form-login custom-form-login" method="post" action="/web/login/" enctype="multipart/form-data">
+
+
+            {% if message %}
+            <p style="color:green; font-size:125%">{{ message }}</p>
+            {% endif %}
+
+            {% if error %}
+            <p style="color:red; font-size:125%">{{ error }}</p>
+            {% endif %}
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="user_email">Email:</label>
+                <input type="email" class="form-control" placeholder="User Email" name="user_email" autofocus required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" placeholder="Password"
+                type="password" id="password" name="password"  required pattern=".{8,}" title="8 characters minimum">
+                
+            </div>
+
+            <label class="checkbox">
+                <span class="pull-right">
+                    <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
+
+                </span>
+            </label>
+            <button class="btn ladda-button btn-theme btn-block" data-style="slide-right" style="color: #2A3542"><span class="ladda-label"><i class="fa fa-lock"></i> SIGN IN</span></button>
+            <hr>
+            <div class="registration">
+                Don't have an account yet?<br/>
+                <a class="" href="/register">
+                    Create an account
+                </a>
+            </div>
+        </form>
+
+    </div>
+    {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

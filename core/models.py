@@ -68,7 +68,7 @@ class CompanyModel(BaseModel):
         ClaimRequest.objects.create(company=self, user=user)
 
 
-class ClaimRequest(BaseModel):
+class ClaimCompanyRequest(BaseModel):
     """Claim requests by the users"""
     
     company =  models.ForeignKey(CompanyModel, on_delete=models.CASCADE)

@@ -47,7 +47,7 @@ class BaseForm(forms.Form):
         return any(char.isdigit() for char in inputString)
 
 
-class RegisterUserAndCompany(BaseForm):
+class CreateUserAndCompanyForm(BaseForm):
     """
     Form for user registration/creating account
     """
@@ -86,7 +86,7 @@ class RegisterUserAndCompany(BaseForm):
     def clean(self, *args, **kwargs):
         """Clean function"""
 
-        cleaned_data = super(RegisterUserAndCompany, self).clean()
+        cleaned_data = super(CreateUserAndCompanyForm, self).clean()
 
         # USER #
         if self.is_name_invalid(cleaned_data.get('first_name')):
@@ -124,20 +124,8 @@ class RegisterUserAndCompany(BaseForm):
         else:
             return cleaned_data
 
-class AddCompanyForm(BaseForm):
 
-
-    def clean(self, *args, **kwargs):
-        """
-        Clean function
-        """
-        cleaned_data = super(AddCompanyForm, self).clean()
-
-        pprint(cleaned_data)
-
-
-
-class RegisterUserForm(BaseForm):
+class CreateUserForm(BaseForm):
     """
     Form for user registration/creating account
     """
@@ -160,7 +148,7 @@ class RegisterUserForm(BaseForm):
     def clean(self, *args, **kwargs):
         """Clean function"""
 
-        cleaned_data = super(RegisterUserForm, self).clean()
+        cleaned_data = super(CreateUserForm, self).clean()
 
         if self.is_name_invalid(cleaned_data.get('first_name')):
             raise forms.ValidationError('First Name you have entered is invalid')
@@ -182,7 +170,7 @@ class RegisterUserForm(BaseForm):
         else:
             return cleaned_data
 
-class AddCompanyForm(BaseForm):
+class CreateCompanyForm(BaseForm):
     WHERE_YOU_HEARD_ABT_US_CHOICES = (
         ('B', 'Blog'),
         ('W', 'Website'),
@@ -200,7 +188,7 @@ class AddCompanyForm(BaseForm):
         """
         Clean function
         """
-        cleaned_data = super(AddCompanyForm, self).clean()
+        cleaned_data = super(CreateCompanyForm, self).clean()
 
         pprint(cleaned_data)
 
