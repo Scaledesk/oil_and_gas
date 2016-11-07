@@ -39,7 +39,7 @@ class UserProfile(BaseModel):
         ( 'F', 'Female'),
         ('O', 'Other'))
             
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(max_length=5, choices=GENDER_CHOICES)
     dob = models.DateField()
     user_phone_no = models.CharField(max_length=10)
@@ -54,7 +54,7 @@ class CompanyModel(BaseModel):
         ('A', 'Advertisement'),
         ('S', 'Social Media'),
         ('O', 'Other'),)
-    owner = models.ForeignKey(UserProfile) #for the companies created and added by oil_and_gas admin, default user can be admin himself.
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=150, blank=False)
     company_email = models.CharField(max_length=150,blank=False)
     company_phone_no = models.CharField(max_length=10,blank=True)
@@ -70,31 +70,31 @@ class CompanyModel(BaseModel):
 
 class ClaimCompanyRequest(BaseModel):
     """Claim requests by the users"""
-    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     company =  models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    # user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default = False)
 
-class SubscriptionPlan(BaseModel):
-    SUBSCRIPTION_OPTIONS = (
-        ('BSC', 'Basic'),
-        ('STD', 'Standard'),
-        ('PRO', 'Pro'),
-        ('PRE', 'Social Media'),)
-    sub_type = models.CharField(max_length=3, choices=SUBSCRIPTION_OPTIONS, primary_key=True)
-    cost_per_month = models.FloatField()
-    discount = models.FloatField()
+# class SubscriptionPlan(BaseModel):
+#     SUBSCRIPTION_OPTIONS = (
+#         ('BSC', 'Basic'),
+#         ('STD', 'Standard'),
+#         ('PRO', 'Pro'),)
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+#     sub_type = models.CharField(max_length=3, choices=SUBSCRIPTION_OPTIONS)
+#     cost_per_month = models.FloatField()
+#     discount = models.FloatField()
 
-class Subscription(BaseModel):
-    """For subscription"""
+# class Subscription(BaseModel):
+#     """For subscription"""
 
-    SUBSCRIPTION_OPTIONS = (
-        ('BSC', 'Basic'),
-        ('STD', 'Standard'),
-        ('PRO', 'Pro'),
-        ('PRE', 'Social Media'),)
-    # user  = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    company = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    sub_type = models.CharField(max_length=3, default='BSC', choices=SUBSCRIPTION_OPTIONS)
-    sub_begin_time =  models.DateField(default=None)
-    sub_end_time = models.DateField(default=None)
+#     SUBSCRIPTION_OPTIONS = (
+#         ('BSC', 'Basic'),
+#         ('STD', 'Standard'),
+#         ('PRO', 'Pro'),)
+#     # user  = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+#     # company = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+#     sub_type = models.CharField(max_length=3, default='BSC', choices=SUBSCRIPTION_OPTIONS)
+#     sub_begin_time =  models.DateField(default=None)
+#     sub_end_time = models.DateField(default=None)

@@ -40,7 +40,7 @@ def Logout(request):
     
 
 def SearchCompany(request):
-    search_qs = CompanyModel.objects.filter(owner=UserProfile.objects.filter(user=User.objects.filter(is_superuser=True)))
+    search_qs = CompanyModel.objects.filter(owner=User.objects.filter(is_superuser=True))
     results = []
     for r in search_qs:
         results.append(r.company_name)

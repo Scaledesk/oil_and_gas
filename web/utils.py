@@ -52,7 +52,7 @@ def CreateCompanyUtil(data_dict):
     """
     cm = CompanyModel()
     # cm.owner = UserProfile.objects.get(user=User.objects.get(email=data_dict['user_email']))is_superuser=True
-    cm.owner = UserProfile.objects.get(user=User.objects.filter(is_superuser=True))
+    cm.owner = User.objects.get(is_superuser=True)
     cm.company_name = data_dict['company_name']
     cm.company_email = data_dict['company_email']
     cm.company_phone_no = data_dict['company_phone_no']
@@ -76,7 +76,7 @@ def CreateUserAndCompanyUtil(data_dict):
     """
     if CreateUserAndUserProfileUtil(data_dict):
         if CreateCompanyUtil(data_dict):
-            user = UserProfile.objects.get(user=User.objects.get(email=data_dict['user_email']))
+            user = User.objects.get(email=data_dict['user_email'])
             company_name = data_dict['company_name']
             if ClaimCompanyRequestUtil(user, company_name):
                 return True
@@ -92,9 +92,7 @@ def CreateUserAndClaimCompanyUtil(data_dict, company_name):
     Util function for createing a new user and than save his request to claim the company.
     """
     if CreateUserAndUserProfileUtil(data_dict):
-        user = UserProfile.objects.get(user=User.objects.get(email=data_dict['user_email']))
-        pprint(user)
-
+        user = user=User.objects.get(email=data_dict['user_email'])
         if ClaimCompanyRequestUtil(user, company_name):
             return True
         else:
