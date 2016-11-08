@@ -201,42 +201,58 @@ class CreateCompanyForm(BaseForm):
         else:
             return cleaned_data
 
+#### Free Subscription Form ####
+
+class FreeFieldsForm(BaseForm):
+    address_line1 = forms.CharField(max_length=40, label="Address Line 1:", required=False)
+    address_line2 = forms.CharField(max_length=40, label="Address Line 2:", required=False)
+    address_line3 = forms.CharField(max_length=40, label="Address Line 3:", required=False)
+    city = forms.CharField(max_length=30, label="City:", required=False)
+    website = forms.CharField(max_length=200, label="Company website:", required=False)
+    year_founded = forms.CharField(max_length=4, label="Year Founded:", required=False)
+    about = forms.CharField(max_length=100, label="About Company:", required=False)
+
+#### Free Subscription Form ####
 
 
 
+#### Premium Subscription Form ####
+
+class PremiumFields(BaseForm):
+    logo = forms.ImageField(required=False, label="Company logo:")
+    registration_no = forms.ImageField(max_length=12, label="Company registration No:", required=False)
+    bio = forms.CharField(max_length=1000, label="Company bio:", required=False)
+    no_of_emp = forms.IntegerField(required=False, label="No of employee:")
+    sale_volume = forms.CharField(max_length=30, label="Sale volume:", required=False)
+
+class GalleryForm(BaseForm):
+    image = forms.ImageField(required=False, label="Image:")
+
+class BrochureForm(BaseForm):
+    brochure = forms.FileField(required=False, label="Company Brochure:")
+
+class VideoLinkForm(BaseForm):
+    video_link = forms.URLField(label="video_link:", required=False)
+
+class KeyClient(BaseForm):
+    key_client = forms.CharField(max_length=150, label="Key Client:")
+
+# class KeyAlliance(BaseModel):
 
 
+class LocationForm(BaseForm):
+    location_type = forms.CharField(max_length=30, label="Location Type:", required=False)
+    location = forms.CharField(max_length=200, label="Location:", required=False)
 
+class CertificationForm(BaseForm):
+    certi_name = forms.CharField(max_length=100, label="Certification name:", required=False)
+    certi_description = forms.CharField(max_length=200, label="Certificatio description:", required=False)
+    certi_doc = forms.FileField(required=False, label="Certification Document")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+class SocialLinksForm(BaseForm):
+    facebook = forms.URLField(required=False, label="Facebook Link:")
+    twitter = forms.URLField(required=False, label="Twitter Link:")
+    linkedin = forms.URLField(required=False, label="Linkedin:")
 
 
 

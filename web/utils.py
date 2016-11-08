@@ -99,3 +99,83 @@ def CreateUserAndClaimCompanyUtil(data_dict, company_name):
             return False
     else:
         return False
+
+
+#### Free Fields ####
+
+def CreateFreeFieldsUtil(data_dict, company):
+    """
+    Util function to save Free Fields
+    """
+    ff=FreeFields()
+    ff.company = company
+    ff.address_line1 = data_dict['address_line1']
+    ff.address_line1 = data_dict['address_line2']
+    ff.address_line3 = data_dict['address_line3']
+    ff.city = data_dict['city']
+    ff.pin = data_dict['pin']
+    ff.website = data_dict['website']
+    ff.year_founded = data_dict['year_founded']
+    ff.about = data_dict['about']
+    ff.save()
+    return True
+
+#### Free Feind End ####
+
+#### Premium Fields ####
+
+def CreatePremiumFieldsUtil(data_dict, files, company):
+    pf = PremiumFields()
+    pf.company = company
+    pf.logo = files['logo'] #See later if files to passed will be individual file or dictionary of files depending on how the form are filled.
+    pf.registration_no = data_dict['registration_no']
+    pf.no_of_emp = data_dict['no_of_emp']
+    pf.sale_volume = data_dict['sale_volume']
+    pf.save()
+    return True
+
+def CreateGallaryUtil(files, company):
+    g = Gallery()
+    g.company = company
+    g.image = files['gallery']
+
+def CreateBrochureUtil(files, company):
+    b = Brochure()
+    b.brochure = files['brochure']
+    b.save()
+    return True
+
+def CreateVideoLinkUtil(data_dict, company):
+    vl = VideoLink()
+    vl.company = company
+    vl.video_link = data_dict['video_link']
+    vl.save()
+
+def CreateKeyClient(data_dict, company):
+    kc = KeyClient()
+    kc.company = company
+    kc.key_client = data_dict['key_client']
+
+def CreateKeyAlliance(data_dict, company):
+    ka = KeyAlliance()
+    ka.company = company
+    ka.key_alliance = data_dict['key_alliance']
+
+def CreateLocation(data_dict, company):
+    l = Location()
+    l.company = company
+    l.company_type = data_dict['company_type']
+    l.company = data_dict['company']
+
+def CreateCertificationUtil(data_dict, files, company):
+    c = Certification()
+    c.company = company
+    c.certi_name = data_dict['certi_name']
+    c.certi_description = data_dict['certi_description']
+    c.certi_doc = files['certi_doc']
+
+def CreateSocialLinkUtil(data_dict, company):
+    sl = SocialLinks()
+    sl.facebook = data_dict['facebook']
+    sl.twitter = data_dict['twitter']
+    sl.linkedin = data_dict['linkedin']
