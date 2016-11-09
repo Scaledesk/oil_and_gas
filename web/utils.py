@@ -101,7 +101,18 @@ def CreateUserAndClaimCompanyUtil(data_dict, company_name):
         return False
 
 
-#### Free Fields ####
+
+def IsPremium(user):
+    company = CompanyModel.objects.get(owner=user)
+    s = Subscription.objects.get(company=company)
+    if ((s.sub_type== 'P') and (s.is_active == True)) or ((s.sub_type== 'S') and (s.is_active == True)):
+        return True
+    else:
+        return False
+
+
+
+############################################## Free Fields #######################################################
 
 def CreateFreeFieldsUtil(data_dict, user):
     """
@@ -122,13 +133,12 @@ def CreateFreeFieldsUtil(data_dict, user):
     ff.save()
     return True
 
-#### Free Feind End ####
+############################################## Free Feind End ########################################################
 
-#### Premium Fields ####
+############################################## Premium Fields ######################################################
+
 
 def CreateBasicPremiumFieldsUtil(data_dict, user):
-    pprint('--------------------------------------------------------------------------------------------------------------------------------')
-    pprint(data_dict)
     pf = BasicPremiumFields()
     pf.company = CompanyModel.objects.get(owner=user)
     pf.logo = data_dict['logo'] #See later if files to passed will be individual file or dictionary of files depending on how the form are filled.
@@ -199,3 +209,5 @@ def CreateSocialLinksUtil(data_dict, user):
     sl.linkedin = data_dict['linkedin']
     sl.save()
     return True
+
+####################################### Premium Fields ####################################################

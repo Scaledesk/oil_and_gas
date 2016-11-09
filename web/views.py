@@ -136,6 +136,9 @@ def FreeFields(request):
 
 @login_required
 def BasicPremiumFields(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+    
     current_form = None
     error = None
     if request.method == 'GET':
@@ -153,6 +156,9 @@ def BasicPremiumFields(request):
 
 @login_required
 def Gallery(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+
     current_form = None
     error = None
     if request.method == 'GET':
@@ -170,6 +176,9 @@ def Gallery(request):
 
 @login_required
 def Brochure(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+
     current_form = None
     error = None
     if request.method == 'GET':
@@ -188,6 +197,9 @@ def Brochure(request):
 
 @login_required
 def VideoLink(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+
     current_form = None
     error = None
     if request.method == 'GET':
@@ -207,6 +219,9 @@ def VideoLink(request):
 
 @login_required
 def Location(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+
     current_form = None
     error = None
     if request.method == 'GET':
@@ -224,6 +239,9 @@ def Location(request):
 
 @login_required
 def Certification(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+
     current_form = None
     error = None
     if request.method == 'GET':
@@ -241,6 +259,9 @@ def Certification(request):
 
 @login_required
 def SocialLinks(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+        
     current_form = None
     error = None
     if request.method == 'GET':
