@@ -114,12 +114,11 @@ class FreeFields(BaseModel):
 
 
 #### PREMIUM SUBSCRIPTION FIELDS #####
-class PremiumFields(BaseModel):
+class BasicPremiumFields(BaseModel):
     """Model to save premium fields"""
     company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
-    logo = models.ImageField(upload_to='comapany_logo/', default=None, blank=True) 
-    registration_no = models.CharField(max_length=12, default=None, blank=True) #     Company DUNS/Registration Confirmation/ Business Number
-    bio = models.CharField(max_length=1000, default=None, blank=True)
+    logo = models.ImageField(upload_to='company_logo/', default=None, blank=True) 
+    registration_no = models.CharField(max_length=12, default=None, blank=True)
     no_of_emp = models.IntegerField(default=None, blank=True)
     sale_volume = models.CharField(max_length=30, default=None, blank=True)
 

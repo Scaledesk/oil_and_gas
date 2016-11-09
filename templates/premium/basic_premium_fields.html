@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6 ">
+
+            <h3 class="text-center">Free Fields</h3>
+
+            <form id="form"  action="/web/basic_premium_fields/" method="post" enctype="multipart/form-data" >
+
+                {% if error %}
+                {% for errors in error %}
+                <p class="text-danger">{{ errors }}</p>
+                {% endfor %}
+                {% endif %}
+
+                <div class="form-group text-center">
+
+                    <div class="col-md-offset-3 col-md-8">
+                        
+
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="id_logo">Logo:</label>
+                            {{ form.logo|attr:"accept:image/*"|attr:"class:form-control"}}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_registration_no">Registration No:</label>
+                            {{ form.registration_no|attr:"class:form-control"|attr:"type:text"|attr:"autocomplete:off" }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_bio">Bio:</label>
+                            {{ form.bio|attr:"class:form-control"|attr:"type:text"|attr:"autocomplete:off" }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_no_of_emp">No of employee:</label>
+                            {{ form.no_of_emp|attr:"class:form-control"|attr:"type:number"|attr:"autocomplete:off" }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_pin">Sale Volume:</label>
+                            {{ form.sale_volume|attr:"class:form-control"|attr:"type:text"|attr:"autocomplete:off" }}
+                        </div>
+
+                        <div id="lower text-center">
+                            <br>
+                            <button class="btn ladda-button btn-theme btn-block" data-style="slide-right" style="color: #2A3542"><span class="ladda-label">Submit</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+{% block custom_script %}
+
+<script>
+
+</script>
+
+{% endblock %}
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+

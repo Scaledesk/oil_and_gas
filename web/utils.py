@@ -103,14 +103,16 @@ def CreateUserAndClaimCompanyUtil(data_dict, company_name):
 
 #### Free Fields ####
 
-def CreateFreeFieldsUtil(data_dict, company):
+def CreateFreeFieldsUtil(data_dict, user):
     """
     Util function to save Free Fields
     """
+    pprint(str(user))
+    pprint(str(data_dict))
     ff=FreeFields()
-    ff.company = company
+    ff.company = CompanyModel.objects.get(owner=user)
     ff.address_line1 = data_dict['address_line1']
-    ff.address_line1 = data_dict['address_line2']
+    ff.address_line2 = data_dict['address_line2']
     ff.address_line3 = data_dict['address_line3']
     ff.city = data_dict['city']
     ff.pin = data_dict['pin']
@@ -124,58 +126,76 @@ def CreateFreeFieldsUtil(data_dict, company):
 
 #### Premium Fields ####
 
-def CreatePremiumFieldsUtil(data_dict, files, company):
-    pf = PremiumFields()
-    pf.company = company
-    pf.logo = files['logo'] #See later if files to passed will be individual file or dictionary of files depending on how the form are filled.
+def CreateBasicPremiumFieldsUtil(data_dict, user):
+    pprint('--------------------------------------------------------------------------------------------------------------------------------')
+    pprint(data_dict)
+    pf = BasicPremiumFields()
+    pf.company = CompanyModel.objects.get(owner=user)
+    pf.logo = data_dict['logo'] #See later if files to passed will be individual file or dictionary of files depending on how the form are filled.
     pf.registration_no = data_dict['registration_no']
+    pf.bio = data_dict['bio']
     pf.no_of_emp = data_dict['no_of_emp']
     pf.sale_volume = data_dict['sale_volume']
     pf.save()
     return True
 
-def CreateGallaryUtil(files, company):
+def CreateGalleryUtil(files, user):
     g = Gallery()
-    g.company = company
-    g.image = files['gallery']
+    g.company = CompanyModel.objects.get(owner=user)
+    g.image = files['image']
+    g.save()
+    return True
 
-def CreateBrochureUtil(files, company):
+def CreateBrochureUtil(data_dict, user):
     b = Brochure()
-    b.brochure = files['brochure']
+    b.company = CompanyModel.objects.get(owner=user)
+    b.brochure = data_dict['brochure']
     b.save()
     return True
 
-def CreateVideoLinkUtil(data_dict, company):
+def CreateVideoLinkUtil(data_dict, user):
     vl = VideoLink()
-    vl.company = company
+    vl.company = CompanyModel.objects.get(owner=user)
     vl.video_link = data_dict['video_link']
     vl.save()
+    return True
 
-def CreateKeyClient(data_dict, company):
+def CreateKeyClient(data_dict, user):
+    return True
     kc = KeyClient()
-    kc.company = company
+    kc.company = CompanyModel.objects.get(owner=user)
     kc.key_client = data_dict['key_client']
+    return True
 
-def CreateKeyAlliance(data_dict, company):
+def CreateKeyAlliance(data_dict, user):
     ka = KeyAlliance()
-    ka.company = company
+    ka.company = CompanyModel.objects.get(owner=user)
     ka.key_alliance = data_dict['key_alliance']
+    ka.save()
+    return True
 
-def CreateLocation(data_dict, company):
+def CreateLocation(data_dict, user):
     l = Location()
-    l.company = company
+    l.company = CompanyModel.objects.get(owner=user)
     l.company_type = data_dict['company_type']
     l.company = data_dict['company']
+    ka.save()
+    return True
 
-def CreateCertificationUtil(data_dict, files, company):
+def CreateCertificationUtil(data_dict, user):
     c = Certification()
-    c.company = company
+    c.company = CompanyModel.objects.get(owner=user)
     c.certi_name = data_dict['certi_name']
     c.certi_description = data_dict['certi_description']
-    c.certi_doc = files['certi_doc']
+    c.certi_doc = data_dict['certi_doc']
+    c.save()
+    return True
 
-def CreateSocialLinkUtil(data_dict, company):
+def CreateSocialLinkUtil(data_dict, user):
     sl = SocialLinks()
+    sl.company = CompanyModel.objects.get(owner=user)
     sl.facebook = data_dict['facebook']
     sl.twitter = data_dict['twitter']
     sl.linkedin = data_dict['linkedin']
+    c.save()
+    return True

@@ -208,6 +208,7 @@ class FreeFieldsForm(BaseForm):
     address_line2 = forms.CharField(max_length=40, label="Address Line 2:", required=False)
     address_line3 = forms.CharField(max_length=40, label="Address Line 3:", required=False)
     city = forms.CharField(max_length=30, label="City:", required=False)
+    pin = forms.CharField(max_length=30, label="pin", required=False)
     website = forms.CharField(max_length=200, label="Company website:", required=False)
     year_founded = forms.CharField(max_length=4, label="Year Founded:", required=False)
     about = forms.CharField(max_length=100, label="About Company:", required=False)
@@ -218,9 +219,9 @@ class FreeFieldsForm(BaseForm):
 
 #### Premium Subscription Form ####
 
-class PremiumFields(BaseForm):
+class BasicPremiumFieldsForm(BaseForm):
     logo = forms.ImageField(required=False, label="Company logo:")
-    registration_no = forms.ImageField(max_length=12, label="Company registration No:", required=False)
+    registration_no = forms.CharField(max_length=12, label="Company registration No:", required=False)
     bio = forms.CharField(max_length=1000, label="Company bio:", required=False)
     no_of_emp = forms.IntegerField(required=False, label="No of employee:")
     sale_volume = forms.CharField(max_length=30, label="Sale volume:", required=False)

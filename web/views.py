@@ -5,11 +5,11 @@ from django.contrib.auth.decorators import login_required
 from pprint import pprint
 # from django.utils import simplejson
 import json as simplejson
-from web.utils import CreateCompanyUtil,  CreateUserUtil, CreateCompanyUtil, CreateUserProfileUtil, CreateUserAndCompanyUtil, CreateUserAndClaimCompanyUtil,  CreateUserAndUserProfileUtil
-from web.forms import CreateUserForm, CreateCompanyForm, CreateUserAndCompanyForm
-
+# from web.utils import CreateCompanyUtil,  CreateUserUtil, CreateCompanyUtil, CreateUserProfileUtil, CreateUserAndCompanyUtil, CreateUserAndClaimCompanyUtil,  CreateUserAndUserProfileUtil
+# from web.forms import CreateUserForm, CreateCompanyForm, CreateUserAndCompanyForm
+from web.utils import *
+from web.forms import *
 from core.models import *
-
 
 
 def Login(request):
@@ -37,7 +37,6 @@ def Logout(request):
     LogoutMessage="Logout Successful"
     return render(request, 'login.html',
                   context={'message':LogoutMessage})
-    
 
 def SearchCompany(request):
     search_qs = CompanyModel.objects.filter(owner=User.objects.filter(is_superuser=True))
@@ -70,7 +69,6 @@ def CreateUserAndClaimCompany(request):
         else:
             return Http404
     return render(request, 'create_user_and_claim_company.html', context)
-
 
 def CreateUserAndCompany(request):
     current_form = None
@@ -108,10 +106,99 @@ def CreateUserAndCompany(request):
 #         if current_form.is_valid():
 #             is_company_added = AddCompanyUtil(current_form.cleaned_data)
 #             if is_company_added == True:
-#                 return HttpResponse('company added')
+#                 return HttpResponse('company added')import CreateUserForm, CreateCompanyForm, CreateUserAndCompanyForm
 #             else:
 #                 HttpResponse('Server Error')
 #         else:
 #             context= {'form':current_form, 'error':error}
 #             error = current_form.errors.values()[0]
 #     return render(request, 'add_company.html',context=context)
+
+@login_required
+def FreeFields(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = FreeFieldsForm()
+    if request.method == 'POST':
+        current_form = FreeFieldsForm(request.POST)
+        if current_form.is_valid():
+            if CreateFreeFieldsUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('data has been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]            
+    return render(request, 'free/free_fields.html', context = {'form':current_form, 'error':error})
+
+
+
+
+@login_required
+def BasicPremiumFields(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = BasicPremiumFieldsForm()
+    if request.method == 'POST':
+        current_form = BasicPremiumFieldsForm(request.POST, request.FILES)
+        if current_form.is_valid():
+            if CreateBasicPremiumFieldsUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Basic Premium Fields Been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]
+    return render(request, 'premium/basic_premium_fields.html', context = {'form':current_form, 'error':error})
+
+@login_required
+def Gallery(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = GalleryForm()
+    if request.method == 'POST':
+        current_form = GalleryForm(request.POST, request.FILES)
+        if current_form.is_valid():
+            if CreateGalleryUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Gallery Image has been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]
+    return render(request, 'premium/gallery.html', context = {'form':current_form, 'error':error})
+
+@login_required
+def Brochure(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = BrochureForm()
+    if request.method == 'POST':
+        current_form = BrochureForm(request.POST, request.FILES)
+        if current_form.is_valid():
+            if CreateBrochureUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Brochure has been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]
+    return render(request, 'premium/brochure.html', context = {'form':current_form, 'error':error})
+
+
+@login_required
+def VideoLink(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = VideoLinkForm()
+    if request.method == 'POST':
+        current_form = VideoLinkForm(request.POST)
+        if current_form.is_valid():
+            if CreateVideoLinkUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Brochure has been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]
+    return render(request, 'premium/video_link.html', context = {'form':current_form, 'error':error})

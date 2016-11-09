@@ -128,3 +128,10 @@ STATICFILES_DIRS = ["static/",]
 SERIALIZABLE_VALUE={
 
 }
+
+
+LOGIN_URL = '/web/login/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/static/media/'
+
