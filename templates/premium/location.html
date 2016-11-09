@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="text-center">Location</h1>
+    <div class="col-md-offset-3 col-md-6">
+
+        {% if error %}
+        {% for errors in error %}
+        <p class="text-danger">{{ errors }}</p>
+        {% endfor %}
+        {% endif %}
+
+        <form class="form-login custom-form-login" method="post" action="/web/location/" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_location_type">Location Type:</label>
+                {{ form.location_type|attr:"class:form-control"}}
+            </div>
+
+            <div class="form-group">
+                <label for="id_location">Location:</label>
+                {{ form.location|attr:"class:form-control"}}
+            </div>
+
+            <div id="lower text-center">
+                <br>
+                <button class="btn ladda-button btn-theme btn-block" data-style="slide-right" style="color: #2A3542"><span class="ladda-label">Submit</span></button>
+            </div>
+
+        </form>
+
+    </div>
+    {% endblock %}
+
+
+
+
+

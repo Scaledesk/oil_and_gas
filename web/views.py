@@ -196,9 +196,28 @@ def VideoLink(request):
         current_form = VideoLinkForm(request.POST)
         if current_form.is_valid():
             if CreateVideoLinkUtil(current_form.cleaned_data, request.user):
-                return HttpResponse('Brochure has been saved')
+                return HttpResponse('Video Link has been saved')
             else:
                 return Http404
         else:
             error = current_form.errors.values()[0]
     return render(request, 'premium/video_link.html', context = {'form':current_form, 'error':error})
+
+#KeyAlliance to be defined here
+
+@login_required
+def Location(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = LocationForm()
+    if request.method == 'POST':
+        current_form = LocationForm(request.POST)
+        if current_form.is_valid():
+            if CreateLocationUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Location has been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]
+    return render(request, 'premium/location.html', context = {'form':current_form, 'error':error})

@@ -18,9 +18,8 @@ urlpatterns = [
     url(r'^basic_premium_fields', BasicPremiumFields),
     url(r'^brochure', Brochure),
 
-    url(r'^video_link', VideoLink)
-
-
+    url(r'^video_link', VideoLink),
+    url(r'^location', Location),
 
     #PremiumFields
     # url(r'^basic_premium_fields', BasicPremiumField),

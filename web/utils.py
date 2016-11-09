@@ -174,12 +174,12 @@ def CreateKeyAlliance(data_dict, user):
     ka.save()
     return True
 
-def CreateLocation(data_dict, user):
+def CreateLocationUtil(data_dict, user):
     l = Location()
     l.company = CompanyModel.objects.get(owner=user)
-    l.company_type = data_dict['company_type']
-    l.company = data_dict['company']
-    ka.save()
+    l.location_type = data_dict['location_type']
+    l.location = data_dict['location']
+    l.save()
     return True
 
 def CreateCertificationUtil(data_dict, user):
