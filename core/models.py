@@ -159,7 +159,7 @@ class Certification(BaseModel):
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     certi_name = models.CharField(max_length=100)
     certi_description = models.CharField(max_length=200, default=None, blank=True)
-    certi_doc = models.FileField(upload_to='certification/', default=None , blank=True)
+    certi_doc = models.FileField(upload_to='company_certification/', default=None , blank=True)
 
 class SocialLinks(BaseModel):
     """Model to save social links for premium subscription."""  

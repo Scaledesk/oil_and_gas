@@ -191,11 +191,11 @@ def CreateCertificationUtil(data_dict, user):
     c.save()
     return True
 
-def CreateSocialLinkUtil(data_dict, user):
+def CreateSocialLinksUtil(data_dict, user):
     sl = SocialLinks()
     sl.company = CompanyModel.objects.get(owner=user)
     sl.facebook = data_dict['facebook']
     sl.twitter = data_dict['twitter']
     sl.linkedin = data_dict['linkedin']
-    c.save()
+    sl.save()
     return True

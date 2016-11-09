@@ -20,6 +20,10 @@ urlpatterns = [
 
     url(r'^video_link', VideoLink),
     url(r'^location', Location),
+    url(r'^certification', Certification),
+    url(r'^social_links', SocialLinks),
+
+
 
     #PremiumFields
     # url(r'^basic_premium_fields', BasicPremiumField),

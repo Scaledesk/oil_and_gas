@@ -221,3 +221,38 @@ def Location(request):
         else:
             error = current_form.errors.values()[0]
     return render(request, 'premium/location.html', context = {'form':current_form, 'error':error})
+
+@login_required
+def Certification(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = CertificationForm()
+    if request.method == 'POST':
+        current_form = CertificationForm(request.POST, request.FILES)
+        if current_form.is_valid():
+            if CreateCertificationUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Certification has been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]
+    return render(request, 'premium/certification.html', context = {'form':current_form, 'error':error})
+
+@login_required
+def SocialLinks(request):
+    current_form = None
+    error = None
+    if request.method == 'GET':
+        current_form = SocialLinksForm()
+    if request.method == 'POST':
+        current_form = SocialLinksForm(request.POST, request.FILES)
+        if current_form.is_valid():
+            if CreateSocialLinksUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Social Links has been saved')
+            else:
+                return Http404
+        else:
+            error = current_form.errors.values()[0]
+    return render(request, 'premium/social_links.html', context = {'form':current_form, 'error':error})
+    
