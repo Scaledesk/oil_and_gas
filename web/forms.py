@@ -203,12 +203,10 @@ class CreateCompanyForm(BaseForm):
 
 #### Free Subscription Form ####
 
-class FreeFieldsForm(BaseForm):
-    address_line1 = forms.CharField(max_length=40, label="Address Line 1:", required=False)
-    address_line2 = forms.CharField(max_length=40, label="Address Line 2:", required=False)
-    address_line3 = forms.CharField(max_length=40, label="Address Line 3:", required=False)
+class FreeFieldForm(BaseForm):
+    address = forms.CharField(max_length=120, label="Address Line 1:", required=False)
     city = forms.CharField(max_length=30, label="City:", required=False)
-    pin = forms.CharField(max_length=30, label="pin", required=False)
+    pin = forms.CharField(max_length=6, label="pin", required=False)
     website = forms.CharField(max_length=200, label="Company website:", required=False)
     year_founded = forms.CharField(max_length=4, label="Year Founded:", required=False)
     about = forms.CharField(max_length=100, label="About Company:", required=False)
@@ -219,7 +217,7 @@ class FreeFieldsForm(BaseForm):
 
 #### Premium Subscription Form ####
 
-class BasicPremiumFieldsForm(BaseForm):
+class BasicPremiumFieldForm(BaseForm):
     logo = forms.ImageField(required=False, label="Company logo:")
     registration_no = forms.CharField(max_length=12, label="Company registration No:", required=False)
     bio = forms.CharField(max_length=1000, label="Company bio:", required=False)
@@ -250,7 +248,7 @@ class CertificationForm(BaseForm):
     certi_description = forms.CharField(max_length=200, label="Certificatio description:", required=False)
     certi_doc = forms.FileField(required=False, label="Certification Document")
 
-class SocialLinksForm(BaseForm):
+class SocialLinkForm(BaseForm):
     facebook = forms.URLField(required=False, label="Facebook Link:")
     twitter = forms.URLField(required=False, label="Twitter Link:")
     linkedin = forms.URLField(required=False, label="Linkedin:")

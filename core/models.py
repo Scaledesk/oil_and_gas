@@ -24,13 +24,11 @@ class BaseModel(models.Model):
             #handle dates specifically
             if isinstance(current_value, datetime.datetime):
                 current_value=str(current_value)
-
             serialized_data.update({i:current_value})
-
         return serialized_data
-
     class Meta:
         abstract=True
+
 
 class UserProfile(BaseModel):
     """ Model for storing basic information about a user """
@@ -44,6 +42,21 @@ class UserProfile(BaseModel):
     dob = models.DateField()
     user_phone_no = models.CharField(max_length=10)
 
+    # def __unicode__(self):
+    #     return self.user
+
+class SubscriptionPlan(BaseModel):
+    """Model to hold the detail of plans only. It will be accesible to admin only"""
+    SUBSCRIPTION_OPTIONS = (
+        ('F', 'Free'),
+        ('P', 'Premium'),
+        ('S', 'Super Premium'),)    
+    sub_type = models.CharField(max_length=4, choices=SUBSCRIPTION_OPTIONS, unique=True)
+    cost_per_month = models.FloatField()
+    discount = models.FloatField(default=0)
+    def __unicode__(self):
+        return self.sub_type
+
 
 class CompanyModel(BaseModel):
     """Company Model Profile"""
@@ -55,13 +68,16 @@ class CompanyModel(BaseModel):
         ('S', 'Social Media'),
         ('O', 'Other'),)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    company_name = models.CharField(max_length=150, blank=False)
+    company_name = models.CharField(max_length=150, blank=False, unique=True)
     company_email = models.CharField(max_length=150,blank=False)
     company_phone_no = models.CharField(max_length=10,blank=False)
     ad_reference = models.CharField(max_length=1,choices=WHERE_YOU_HEARD_ABT_US_CHOICES, default='A')
     is_claimed = models.BooleanField(default=False)
-    is_approved = models.BooleanField(default=False)
-
+    is_approved = models.BooleanField(default=False) 
+    sub_plan = models.ForeignKey(SubscriptionPlan)
+    sub_begin_date =  models.DateField(default=datetime.date.today)
+    sub_end_date = models.DateField(default=datetime.date.today)
+    is_sub_active = models.BooleanField(default=False)
     def request_claim(self,user):
         """method to make the claimrequest object and save it to the db"""
         from .models import ClaimRequest
@@ -72,39 +88,26 @@ class ClaimCompanyRequest(BaseModel):
     """Claim requests by the users"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     company =  models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
-    # user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     is_accepted = models.BooleanField(default = False)
 
 
-class SubscriptionPlan(BaseModel):
-    """Model to hold the detail of plans only. It will be accesible to admin only"""
-    SUBSCRIPTION_OPTIONS = (
-        ('F', 'Free'),
-        ('P', 'Premium'),
-        ('S', 'Super Premium'),)    
-    sub_type = models.CharField(max_length=4, choices=SUBSCRIPTION_OPTIONS, unique=True)
-    cost_per_month = models.FloatField()
-    discount = models.FloatField(default=0)
-
-class Subscription(BaseModel):
-    """Model to save the detail of company's subscription plans"""
-    SUBSCRIPTION_OPTIONS = (
-        ('F', 'Free'),
-        ('P', 'Premium'),
-        ('S', 'Super Premium'),)
-    company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
-    sub_type = models.CharField(max_length=3, default='BSC', choices=SUBSCRIPTION_OPTIONS)
-    sub_begin_time =  models.DateField(default=None)
-    sub_end_time = models.DateField(default=None)
-    is_active = models.BooleanField(default=True)
+# class Subscription(BaseModel):
+#     """Model to save the detail of company's subscription plans"""
+#     SUBSCRIPTION_OPTIONS = (
+#         ('F', 'Free'),
+#         ('P', 'Premium'),
+#         ('S', 'Super Premium'),)
+#     company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
+#     sub_type = models.CharField(max_length=3, default='BSC', choices=SUBSCRIPTION_OPTIONS)
+#     sub_begin_time =  models.DateField(default=None)
+#     sub_end_time = models.DateField(default=None)
+#     is_active = models.BooleanField(default=True)
 
 
-class FreeFields(BaseModel):
+class FreeField(BaseModel):
     company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
     # Make Sure that if one field of address is filled than city and pin is must at form validation.
-    address_line1 = models.CharField(max_length=40, default=None, blank=True)
-    address_line2 = models.CharField(max_length=40, default=None, blank=True)
-    address_line3 = models.CharField(max_length=40, default=None, blank=True)
+    address = models.CharField(max_length=120, default=None, blank=True)
     city = models.CharField(max_length=30, default=None, blank=True)
     pin = models.CharField(max_length=6, default=None, blank=True)
     website = models.CharField(max_length=200, default=None, blank=True)
@@ -114,7 +117,7 @@ class FreeFields(BaseModel):
 
 
 #### PREMIUM SUBSCRIPTION FIELDS #####
-class BasicPremiumFields(BaseModel):
+class BasicPremiumField(BaseModel):
     """Model to save premium fields"""
     company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
     logo = models.ImageField(upload_to='company_logo/', default=None, blank=True) 
@@ -161,7 +164,7 @@ class Certification(BaseModel):
     certi_description = models.CharField(max_length=200, default=None, blank=True)
     certi_doc = models.FileField(upload_to='company_certification/', default=None , blank=True)
 
-class SocialLinks(BaseModel):
+class SocialLink(BaseModel):
     """Model to save social links for premium subscription."""  
     company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
 
@@ -170,3 +173,18 @@ class SocialLinks(BaseModel):
     linkedin = models.CharField(max_length=200, default=None, blank=True)
 
 #### PREMIUM SUBSCRIPTION FIELDS END #####
+
+
+# ########################## SUPER PREMIUM FIELDS ###############################
+
+# class Publications(BaseModel):
+#     PUBLICATION_TYPE(
+#         ('A', 'Article'),
+#         ('P', 'Patent'),
+#         )
+
+#     pub_type = models.CharField(max_length=1)
+#     pub_content = models.CharField(max_length=2000)
+
+# class AreasServed(BaseModel):
+#     

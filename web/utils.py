@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from core.models import *
 from pprint import pprint
+from datetime import datetime
 
 
 
@@ -57,6 +58,8 @@ def CreateCompanyUtil(data_dict):
     cm.company_email = data_dict['company_email']
     cm.company_phone_no = data_dict['company_phone_no']
     cm.ad_reference = data_dict['ad_reference']
+
+    cm.sub_plan = SubscriptionPlan.objects.get(sub_type='F')
     cm.save()
     return True
 
@@ -103,28 +106,34 @@ def CreateUserAndClaimCompanyUtil(data_dict, company_name):
 
 
 def IsPremium(user):
-    company = CompanyModel.objects.get(owner=user)
-    s = Subscription.objects.get(company=company)
-    if ((s.sub_type== 'P') and (s.is_active == True)) or ((s.sub_type== 'S') and (s.is_active == True)):
+    pprint(user)
+    c = CompanyModel.objects.get(owner=user)
+    if c.sub_plan.sub_type=='P' or c.sub_plan.sub_type=='S':
         return True
     else:
         return False
+    # sub_type = SubscriptionPlan.objects.get().sub_type
+    # if s.sub_is_active==True:
+    #     if sub_type == SubscriptionPlan.objects.get(sub_type='P'):
+    #         return True
+    #     elif sub_type == SubscriptionPlan.objects.get(sub_type='S'):
+    #         return True
+    # else:
+    #     return False
 
 
 
 ############################################## Free Fields #######################################################
 
-def CreateFreeFieldsUtil(data_dict, user):
+def CreateFreeFieldUtil(data_dict, user):
     """
     Util function to save Free Fields
     """
     pprint(str(user))
     pprint(str(data_dict))
-    ff=FreeFields()
+    ff=FreeField()
     ff.company = CompanyModel.objects.get(owner=user)
-    ff.address_line1 = data_dict['address_line1']
-    ff.address_line2 = data_dict['address_line2']
-    ff.address_line3 = data_dict['address_line3']
+    ff.address = data_dict['address']
     ff.city = data_dict['city']
     ff.pin = data_dict['pin']
     ff.website = data_dict['website']
@@ -138,8 +147,8 @@ def CreateFreeFieldsUtil(data_dict, user):
 ############################################## Premium Fields ######################################################
 
 
-def CreateBasicPremiumFieldsUtil(data_dict, user):
-    pf = BasicPremiumFields()
+def CreateBasicPremiumFieldUtil(data_dict, user):
+    pf = BasicPremiumField()
     pf.company = CompanyModel.objects.get(owner=user)
     pf.logo = data_dict['logo'] #See later if files to passed will be individual file or dictionary of files depending on how the form are filled.
     pf.registration_no = data_dict['registration_no']
@@ -201,8 +210,8 @@ def CreateCertificationUtil(data_dict, user):
     c.save()
     return True
 
-def CreateSocialLinksUtil(data_dict, user):
-    sl = SocialLinks()
+def CreateSocialLinkUtil(data_dict, user):
+    sl = SocialLink()
     sl.company = CompanyModel.objects.get(owner=user)
     sl.facebook = data_dict['facebook']
     sl.twitter = data_dict['twitter']

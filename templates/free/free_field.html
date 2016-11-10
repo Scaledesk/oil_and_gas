@@ -10,7 +10,7 @@
 
             <h3 class="text-center">Free Fields</h3>
 
-            <form id="form"  action="/web/basic_premium_fields/" method="post" enctype="multipart/form-data" >
+            <form id="form"  action="/web/free_field/" method="post" enctype="multipart/form-data" >
 
                 {% if error %}
                 {% for errors in error %}
@@ -24,30 +24,29 @@
                         
 
                         {% csrf_token %}
-
                         <div class="form-group">
-                            <label for="id_logo">Logo:</label>
-                            {{ form.logo|attr:"accept:image/*"|attr:"class:form-control"}}
+                            <label for="id_address">Address:</label>
+                            {{ form.address|attr:"class:form-control"|attr:"type:text"|attr:"autocomplete:off" }}
                         </div>
 
                         <div class="form-group">
-                            <label for="id_registration_no">Registration No:</label>
-                            {{ form.registration_no|attr:"class:form-control"|attr:"type:text"|attr:"autocomplete:off" }}
+                            <label for="id_pin">PIN:</label>
+                            {{ form.pin|attr:"class:form-control"|attr:"autocomplete:off"|attr:"pattern:[0-9]{6}"|attr:"title:Invalid PIN code" }}
                         </div>
 
                         <div class="form-group">
-                            <label for="id_bio">Bio:</label>
-                            {{ form.bio|attr:"class:form-control"|attr:"type:text"|attr:"autocomplete:off" }}
+                            <label for="id_website">Website:</label>
+                            {{ form.website|attr:"class:form-control"|attr:"autocomplete:off" }}
                         </div>
 
                         <div class="form-group">
-                            <label for="id_no_of_emp">No of employee:</label>
-                            {{ form.no_of_emp|attr:"class:form-control"|attr:"type:number"|attr:"autocomplete:off" }}
+                            <label for="id_year_founded">Year Founded:</label>
+                            {{ form.year_founded|attr:"class:form-control"|attr:"autocomplete:off"|attr:"pattern:[12][0-9]{3}" }}
                         </div>
 
                         <div class="form-group">
-                            <label for="id_pin">Sale Volume:</label>
-                            {{ form.sale_volume|attr:"class:form-control"|attr:"type:text"|attr:"autocomplete:off" }}
+                            <label for="id_about">About:</label>
+                            {{ form.about|attr:"class:form-control"|attr:"autocomplete:off" }}
                         </div>
 
                         <div id="lower text-center">

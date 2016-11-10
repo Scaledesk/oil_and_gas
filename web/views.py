@@ -13,13 +13,11 @@ from core.models import *
 
 
 def Login(request):
-    # return HttpResponse('chal rha hai')
     next = request.GET.get('next', '/')
     if request.method == "POST":
         user_email = request.POST['user_email']
         password = request.POST['password']
-        user = authenticate(username=user_email, password=password)
-        
+        user = authenticate(username=user_email, password=password)        
         if user is not None:
             login(request, user)
             return HttpResponse('Login sucessfull') #remove this once proper page is designeds
@@ -39,7 +37,7 @@ def Logout(request):
                   context={'message':LogoutMessage})
 
 def SearchCompany(request):
-    search_qs = CompanyModel.objects.filter(owner=User.objects.filter(is_superuser=True))
+    search_qs = CompanyModel.objects.filter(is_claimed=False, is_approved=True)
     results = []
     for r in search_qs:
         results.append(r.company_name)
@@ -58,8 +56,6 @@ def CreateUserAndClaimCompany(request):
         user_data_dict = request.POST
         company_name = request.POST['company_name']
         user_data_dict.pop('company_name', None)
-        # return HttpResponse(company_name)
-        # obj = CompanyModel.objects.filter(company_name=company_name)
         user_form = CreateUserForm(user_data_dict)
         if user_form.is_valid():
             if CreateUserAndClaimCompanyUtil(user_data_dict, company_name):
@@ -115,44 +111,44 @@ def CreateUserAndCompany(request):
 #     return render(request, 'add_company.html',context=context)
 
 @login_required
-def FreeFields(request):
+def FreeField(request):
     current_form = None
     error = None
     if request.method == 'GET':
-        current_form = FreeFieldsForm()
+        current_form = FreeFieldForm()
     if request.method == 'POST':
-        current_form = FreeFieldsForm(request.POST)
+        current_form = FreeFieldForm(request.POST)
         if current_form.is_valid():
-            if CreateFreeFieldsUtil(current_form.cleaned_data, request.user):
+            if CreateFreeFieldUtil(current_form.cleaned_data, request.user):
                 return HttpResponse('data has been saved')
             else:
                 return Http404
         else:
             error = current_form.errors.values()[0]            
-    return render(request, 'free/free_fields.html', context = {'form':current_form, 'error':error})
+    return render(request, 'free/free_field.html', context = {'form':current_form, 'error':error})
 
 
 
 
 @login_required
-def BasicPremiumFields(request):
+def BasicPremiumField(request):
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
     
     current_form = None
     error = None
     if request.method == 'GET':
-        current_form = BasicPremiumFieldsForm()
+        current_form = BasicPremiumFieldForm()
     if request.method == 'POST':
-        current_form = BasicPremiumFieldsForm(request.POST, request.FILES)
+        current_form = BasicPremiumFieldForm(request.POST, request.FILES)
         if current_form.is_valid():
-            if CreateBasicPremiumFieldsUtil(current_form.cleaned_data, request.user):
+            if CreateBasicPremiumFieldUtil(current_form.cleaned_data, request.user):
                 return HttpResponse('Basic Premium Fields Been saved')
             else:
                 return Http404
         else:
             error = current_form.errors.values()[0]
-    return render(request, 'premium/basic_premium_fields.html', context = {'form':current_form, 'error':error})
+    return render(request, 'premium/basic_premium_field.html', context = {'form':current_form, 'error':error})
 
 @login_required
 def Gallery(request):
@@ -258,22 +254,22 @@ def Certification(request):
     return render(request, 'premium/certification.html', context = {'form':current_form, 'error':error})
 
 @login_required
-def SocialLinks(request):
+def SocialLink(request):
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
         
     current_form = None
     error = None
     if request.method == 'GET':
-        current_form = SocialLinksForm()
+        current_form = SocialLinkForm()
     if request.method == 'POST':
-        current_form = SocialLinksForm(request.POST, request.FILES)
+        current_form = SocialLinkForm(request.POST, request.FILES)
         if current_form.is_valid():
-            if CreateSocialLinksUtil(current_form.cleaned_data, request.user):
+            if CreateSocialLinkUtil(current_form.cleaned_data, request.user):
                 return HttpResponse('Social Links has been saved')
             else:
                 return Http404
         else:
             error = current_form.errors.values()[0]
-    return render(request, 'premium/social_links.html', context = {'form':current_form, 'error':error})
+    return render(request, 'premium/social_link.html', context = {'form':current_form, 'error':error})
     
