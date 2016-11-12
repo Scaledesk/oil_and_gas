@@ -255,25 +255,14 @@ class SocialLinkForm(BaseForm):
 
 
 
-# class BaseForm(forms.Form):
-#     """
-#     Base forms for getting all the forms
-#     """
-#     def validate_username(self):
-#         """for validating the username"""
-#         return False
-#     def validate_password(self):
-#         """for validating the password"""
-#         return False
-#     def validate_mobile(self,mobile):
-#         """for validating the mobile number"""
-#         if not mobile.issigit:
-#             return True
-#         if len(mobile) == 10 or len(mobile) == 11:
-#             return False
-#         else:
-#             return True
+class PublicationForm(BaseForm):
+    PUB_TYPE = (
+        ('A', 'Article'),
+        ('P', 'Patent'),
+        )
 
+    pub_type = forms.ChoiceField(choices=PUB_TYPE)
+    pub_content = forms.CharField(max_length=2000)
 
 
 # class LoginUserForm(BaseForm):

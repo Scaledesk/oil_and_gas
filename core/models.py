@@ -177,14 +177,11 @@ class SocialLink(BaseModel):
 
 # ########################## SUPER PREMIUM FIELDS ###############################
 
-# class Publications(BaseModel):
-#     PUBLICATION_TYPE(
-#         ('A', 'Article'),
-#         ('P', 'Patent'),
-#         )
-
-#     pub_type = models.CharField(max_length=1)
-#     pub_content = models.CharField(max_length=2000)
-
-# class AreasServed(BaseModel):
-#     
+class Publication(BaseModel):
+    PUB_TYPE=(
+        ('A', 'Article'),
+        ('P', 'Patent'),
+        )
+    company = models.ForeignKey(CompanyModel)
+    pub_type = models.CharField(max_length=1, choices=PUB_TYPE)
+    pub_content = models.CharField(max_length=2000)

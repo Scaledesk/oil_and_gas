@@ -1,33 +1,46 @@
 from django.shortcuts import render, render_to_response, HttpResponse, Http404
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pprint import pprint
 # from django.utils import simplejson
 import json as simplejson
-# from web.utils import CreateCompanyUtil,  CreateUserUtil, CreateCompanyUtil, CreateUserProfileUtil, CreateUserAndCompanyUtil, CreateUserAndClaimCompanyUtil,  CreateUserAndUserProfileUtil
-# from web.forms import CreateUserForm, CreateCompanyForm, CreateUserAndCompanyForm
+# from web.utils import CreateCompanyUtil,  CreateUserUtil, CreateCompanyUtil, CreateUserProfileUtil, CreateUserAndCompanyUtil, CreateUserAndClaimCompanyUtil,  CreateUserAndUserProfileUtil# from web.forms import CreateUserForm, CreateCompanyForm, CreateUserAndCompanyForm
 from web.utils import *
 from web.forms import *
 from core.models import *
 
 
+def Landing(request):
+    context=None
+    return render(request, 'landing.html', context=context)
+
+@login_required
+def Dashboard(request):
+    context=None
+    return render(request, 'dashboard.html', context=context)
+@login_required
+def AccountSetting(request):
+    pass
+
 def Login(request):
-    next = request.GET.get('next', '/')
+    if request.method == 'GET':
+        next = request.GET.get('next', '/')
     if request.method == "POST":
+        next = request.GET.get('next', '/')
         user_email = request.POST['user_email']
         password = request.POST['password']
         user = authenticate(username=user_email, password=password)        
         if user is not None:
             login(request, user)
-            return HttpResponse('Login sucessfull') #remove this once proper page is designeds
             return HttpResponseRedirect(next)
         else:
             error = 'Incorrect Email or Password'
             return render(request, 'login.html',
-                          context={'error': error})
+                          context={'error': error, 'next':next})
     else:
-        return render(request, "login.html", {'redirect_to': next})
+        return render(request, "login.html", {'next': next})
 
 @login_required
 def Logout(request):
@@ -272,4 +285,21 @@ def SocialLink(request):
         else:
             error = current_form.errors.values()[0]
     return render(request, 'premium/social_link.html', context = {'form':current_form, 'error':error})
-    
+
+
+@login_required
+def Publication(request):
+    error = None
+    current_form = None
+    if request.method == 'GET':
+        current_form = PublicationForm()
+    if request.method == 'POST':
+        current_form = PublicationForm(request.POST)
+        if current_form.is_valid():
+            if PublicationUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Publication has been saved')
+            else:
+                return HttpResponse('server error')
+        else:
+            error = pf.errors.values()[0]
+    return render(request, 'super_premium/publication.html', context={'form':current_form, 'error':error})  

@@ -10,7 +10,7 @@
 
             <h3 class="text-center">Brochure</h3>
 
-            <form id="form"  action="/web/brochure/" method="post" enctype="multipart/form-data" >
+            <form id="form"  action="/web/publication/" method="post" enctype="multipart/form-data" >
 
                 {% if error %}
                 {% for errors in error %}
@@ -24,8 +24,13 @@
                         {% csrf_token %}
 
                         <div class="form-group">
-                            <label for="id_brochre">Brochure:</label>
-                            {{ form.brochure|attr:"accept:application/pdf, image/jpeg, image/jpg, image/png"|attr:"class:form-control"}}
+                            <label for="id_pub_type">Publication Type:</label>
+                            {{ form.pub_type|attr:"class:form-control"}}
+                        </div>
+
+                        <div class="form-group"
+                            <label for="pub_content">Publication Content:</label>
+                            {{ form.pub_content|attr:"class:form-control"|attr:"autocomplete:off" }}
                         </div>
 
                         <div id="lower text-center">

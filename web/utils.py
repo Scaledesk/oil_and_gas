@@ -39,7 +39,6 @@ def CreateUserAndUserProfileUtil(data_dict):
     current_user = User.objects.create_user(username = user_email, email = user_email, password = password, first_name = first_name, last_name = last_name)
 
     up = UserProfile()
-    # up.user = User.objects.get(email=data_dict['user_email'])
     up.user = current_user
     up.gender = data_dict["gender"]
     up.dob = data_dict["dob"]
@@ -58,7 +57,6 @@ def CreateCompanyUtil(data_dict):
     cm.company_email = data_dict['company_email']
     cm.company_phone_no = data_dict['company_phone_no']
     cm.ad_reference = data_dict['ad_reference']
-
     cm.sub_plan = SubscriptionPlan.objects.get(sub_type='F')
     cm.save()
     return True
@@ -103,25 +101,25 @@ def CreateUserAndClaimCompanyUtil(data_dict, company_name):
     else:
         return False
 
-
-
 def IsPremium(user):
-    pprint(user)
+    """
+    Util function return Trye if the company of user has premium/super_premium subscription.
+    """
     c = CompanyModel.objects.get(owner=user)
     if c.sub_plan.sub_type=='P' or c.sub_plan.sub_type=='S':
         return True
     else:
         return False
-    # sub_type = SubscriptionPlan.objects.get().sub_type
-    # if s.sub_is_active==True:
-    #     if sub_type == SubscriptionPlan.objects.get(sub_type='P'):
-    #         return True
-    #     elif sub_type == SubscriptionPlan.objects.get(sub_type='S'):
-    #         return True
-    # else:
-    #     return False
 
-
+def IsPremium(user):
+    """
+    Util function return true only if the company of user has superpremium subscription
+    """
+    c = CompanyModel.objects.get(owner=user)
+    if c.sub_plan.sub_type=='S':
+        return True
+    else:
+        return False
 
 ############################################## Free Fields #######################################################
 
@@ -148,6 +146,9 @@ def CreateFreeFieldUtil(data_dict, user):
 
 
 def CreateBasicPremiumFieldUtil(data_dict, user):
+    """
+    Util function to save the basic premium field model data.
+    """
     pf = BasicPremiumField()
     pf.company = CompanyModel.objects.get(owner=user)
     pf.logo = data_dict['logo'] #See later if files to passed will be individual file or dictionary of files depending on how the form are filled.
@@ -159,6 +160,9 @@ def CreateBasicPremiumFieldUtil(data_dict, user):
     return True
 
 def CreateGalleryUtil(files, user):
+    """
+    Util model to save the gallery image for the company.
+    """
     g = Gallery()
     g.company = CompanyModel.objects.get(owner=user)
     g.image = files['image']
@@ -166,6 +170,9 @@ def CreateGalleryUtil(files, user):
     return True
 
 def CreateBrochureUtil(data_dict, user):
+    """
+    Util function to save the company brochure.
+    """
     b = Brochure()
     b.company = CompanyModel.objects.get(owner=user)
     b.brochure = data_dict['brochure']
@@ -173,6 +180,9 @@ def CreateBrochureUtil(data_dict, user):
     return True
 
 def CreateVideoLinkUtil(data_dict, user):
+    """
+    Util function to save the video link of the company.
+    """
     vl = VideoLink()
     vl.company = CompanyModel.objects.get(owner=user)
     vl.video_link = data_dict['video_link']
@@ -180,6 +190,9 @@ def CreateVideoLinkUtil(data_dict, user):
     return True
 
 def CreateKeyClient(data_dict, user):
+    """
+    Util function to save the key clients of the company.
+    """
     return True
     kc = KeyClient()
     kc.company = CompanyModel.objects.get(owner=user)
@@ -187,6 +200,9 @@ def CreateKeyClient(data_dict, user):
     return True
 
 def CreateKeyAlliance(data_dict, user):
+    """
+    Util funcition to save the alliance from companymodel database.
+    """
     ka = KeyAlliance()
     ka.company = CompanyModel.objects.get(owner=user)
     ka.key_alliance = data_dict['key_alliance']
@@ -194,7 +210,9 @@ def CreateKeyAlliance(data_dict, user):
     return True
 
 def CreateLocationUtil(data_dict, user):
-    l = Location()
+    """
+    Util function to save the company locations.
+    """
     l.company = CompanyModel.objects.get(owner=user)
     l.location_type = data_dict['location_type']
     l.location = data_dict['location']
@@ -202,6 +220,9 @@ def CreateLocationUtil(data_dict, user):
     return True
 
 def CreateCertificationUtil(data_dict, user):
+    """
+    Util function to save the certificates sofy copy of the company
+    """
     c = Certification()
     c.company = CompanyModel.objects.get(owner=user)
     c.certi_name = data_dict['certi_name']
@@ -211,6 +232,9 @@ def CreateCertificationUtil(data_dict, user):
     return True
 
 def CreateSocialLinkUtil(data_dict, user):
+    """
+    Util function to save the links of social media links of the company.
+    """
     sl = SocialLink()
     sl.company = CompanyModel.objects.get(owner=user)
     sl.facebook = data_dict['facebook']
@@ -219,4 +243,18 @@ def CreateSocialLinkUtil(data_dict, user):
     sl.save()
     return True
 
-####################################### Premium Fields ####################################################
+####################################### Premium Fields End ####################################################
+
+
+################################ Super Premium Fields Start #######################################
+
+def PublicationUtil(data_dict, user):
+    """
+    Util functio to save the Published articles of the company.
+    """
+    p = Publication()
+    p.company = CompanyModel.objects.get(owner=user)
+    p.pub_type = data_dict['pub_type']
+    p.pub_content = data_dict['pub_content']
+    p.save()
+    return True
