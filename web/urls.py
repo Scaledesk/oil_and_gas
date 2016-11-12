@@ -31,4 +31,5 @@ urlpatterns = [
     #Super PremiumFields
     url(r'^publication', Publication),
 
+    url(r'^test', Test),
     ]

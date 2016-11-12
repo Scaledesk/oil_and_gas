@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+
+
+{% block content %}
+// controller.js
+angular
+  .moduel('mdChipsDemo', [])
+  .controller('MdChipsDemoCtrl', function() {
+    var vm = this;
+    vm.selectedOption = '';
+    vm.searchText = '';
+    vm.launchAPIQueryParams = {
+        types: [],
+    };
+
+    vm.launchTypeOptions = [
+        {name: 'Op1', value: 1},
+        {name: 'Op2', value: 2},
+        {name: 'Op3', value: 3},
+        {name: 'Op4', value: 4},
+    ];
+});
+
+// template.html
+<div ng-app="mdChipsDemo" ng-controller="MdChipsDemoCtrl as vm">
+<md-chips ng-model="vm.launchAPIQueryParams.types">
+  <md-autocomplete
+            md-selected-item="vm.selectedOption"
+            md-search-text="vm.searchText"
+            md-items="typeOption in vm.launchTypeOptions"
+            md-item-text="typeOption.name"
+            md-min-length="0"
+            placeholder="Search for a launchTypeOptions">
+      <span md-highlight-text="vm.searchText">{{typeOption.name}}</span>
+  </md-autocomplete>
+  <md-chip-template>
+    <span>{{$chip.name}}</span>
+  </md-chip-template>
+</md-chips>
+</div>
+{% endblock %}

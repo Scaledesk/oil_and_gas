@@ -46,6 +46,7 @@ def Login(request):
 def Logout(request):
     logout(request)
     LogoutMessage="Logout Successful"
+    return HttpResponse('logout sucessful')
     return render(request, 'login.html',
                   context={'message':LogoutMessage})
 
@@ -302,4 +303,11 @@ def Publication(request):
                 return HttpResponse('server error')
         else:
             error = pf.errors.values()[0]
-    return render(request, 'super_premium/publication.html', context={'form':current_form, 'error':error})  
+    return render(request, 'super_premium/publication.html', context={'form':current_form, 'error':error})
+
+
+def Test(request):
+    if request.method == 'GET':
+        return render(request, 'test.html', context=None)
+    if request.method=='POST':
+        pass

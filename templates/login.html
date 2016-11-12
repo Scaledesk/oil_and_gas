@@ -14,7 +14,7 @@
 
 
 
-        <form class="form-login custom-form-login" method="post" action="/web/login/?next={{ next }} enctype="multipart/form-data">
+        <form class="form-login custom-form-login" method="post" action="/web/login/?next={{ next }}">
 
 
             {% if message %}
@@ -48,9 +48,9 @@
             <button class="btn ladda-button btn-theme btn-block" data-style="slide-right" style="color: #2A3542"><span class="ladda-label"><i class="fa fa-lock"></i> SIGN IN</span></button>
             <hr>
             <div class="registration">
-                Don't have an account yet?<br/>
-                <a class="" href="/register">
-                    Create an account
+                Not registered yet?<br/>
+                <a class="" href="/web/create_user_and_claim_company">
+                    Click to register
                 </a>
             </div>
         </form>
