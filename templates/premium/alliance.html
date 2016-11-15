@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6 ">
+
+            <h3 class="text-center">Claim Your Company</h3>
+
+
+            <form id="form"  action="/web/alliance/" method="post" enctype="multipart/form-data" >
+
+                {% if error %}
+                {% for errors in error %}
+                <p class="text-danger">{{ errors }}</p>
+                {% endfor %}
+                {% endif %}
+                {% csrf_token %}
+
+                <div class="form-group text-center">
+
+                    <label for="company_name">Select The Company Name:</label>
+                    <input class="form-control" type="text" name="company_name" id="company_name" autocomplete="off" />
+                    {% csrf_token %}
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+
+
+
+    {% block custom_script %}
+
+    <script>
+                    // document.getElementById("user_form").style.visibility = 'hidden';
+                    $(document).ready(function () {
+                        $("#company_name").keypress(function () {
+                            var value_l = $("#company_name").val();
+                            if (value_l.length >= 1) {
+                                $.get("/web/search_alliance", function (data) {
+                                    var $input = $('#company_name');
+                                    $input.typeahead({
+                                        source: data, autoSelect: false, displayText: function (item) {
+                                            return item;
+                                        }, afterSelect: function (current) {
+
+                                            // document.getElementById("user_form").style.visibility = 'visible';
+                                            // document.getElementById("company_name").readOnly = true;
+                                            // document.getElementById("company_name").disabled = true;                               
+
+                                        }
+                                    });
+                                }, 'json');
+                            }
+                        });
+                    });
+                </script>
+
+    {% endblock %}
+{% endblock %}

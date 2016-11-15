@@ -24,6 +24,10 @@ urlpatterns = [
     url(r'^brochure', Brochure),
 
     url(r'^video_link', VideoLink),
+    url(r'^alliance', Alliance),
+    url(r'^search_alliance', SearchAlliance),
+
+    
     url(r'^location', Location),
     url(r'^certification', Certification),
     url(r'^social_link', SocialLink),

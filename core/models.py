@@ -18,7 +18,7 @@ class BaseModel(models.Model):
         serialized_data={}
 
         for i in serializable_keys:
-            #get the value from the class
+            #get the valjue from the class
             current_value=getattr(self,i)
 
             #handle dates specifically
@@ -57,6 +57,17 @@ class SubscriptionPlan(BaseModel):
     def __unicode__(self):
         return self.sub_type
 
+class ReqSubscriptionPlan(BaseModel):
+    plan_name = models.FloatField(unique=True)
+
+    free_price = models.FloatField()
+    premium_price = models.FloatField()
+    super_premium_price = models.FloatField()
+
+    free_discount = models.FloatField()
+    premium_discount = models.FloatField()
+    super_premium_discount = models.FloatField()
+
 
 class CompanyModel(BaseModel):
     """Company Model Profile"""
@@ -74,10 +85,18 @@ class CompanyModel(BaseModel):
     ad_reference = models.CharField(max_length=1,choices=WHERE_YOU_HEARD_ABT_US_CHOICES, default='A')
     is_claimed = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False) 
+    
+    #Company Subscription
     sub_plan = models.ForeignKey(SubscriptionPlan)
     sub_begin_date =  models.DateField(default=datetime.date.today)
     sub_end_date = models.DateField(default=datetime.date.today)
     is_sub_active = models.BooleanField(default=False)
+
+    #Requirement subscription
+    req_sub_begin_date =  models.DateField(default=datetime.date.today)
+    req_sub_end_date = models.DateField(default=datetime.date.today)
+    is_req_sub_active = models.BooleanField(default=False)
+
     def request_claim(self,user):
         """method to make the claimrequest object and save it to the db"""
         from .models import ClaimRequest
@@ -167,7 +186,6 @@ class Certification(BaseModel):
 class SocialLink(BaseModel):
     """Model to save social links for premium subscription."""  
     company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
-
     facebook = models.CharField(max_length=200, default=None, blank=True)
     twitter = models.CharField(max_length=200, default=None, blank=True)
     linkedin = models.CharField(max_length=200, default=None, blank=True)
@@ -197,23 +215,4 @@ class Requirement(BaseModel):
     company = models.ForeignKey(CompanyModel)
     req_heading = models.CharField(max_length=100)
     req_detail = models.CharField(max_length=2000)
-
-class ReqSubscriptionPlan(BaseModel):
-    plan_name = models.FloatField(unique=True)
-
-    free_price = models.FloatField()
-    premium_price = models.FloatField()
-    super_premium_price = models.FloatField()
-
-    free_discount = models.FloatField()
-    premium_discount = models.FloatField()
-    super_premium_discount = models.FloatField()
-
-class ReqViewSubscription(object):
-    """docstring for ReqViewSubscription"""
-    company = models.ForeignKey(CompanyModel, unique=True)
-    sub_plan = models.ForeignKey(SubscriptionPlan)    
-    is_subscribed = models.BooleanField(default=False)
-    sub_begin_date =  models.DateField(default=datetime.date.today)
-    sub_end_date = models.DateField(default=datetime.date.today)
-    is_sub_active = models.BooleanField(default=False)
+    

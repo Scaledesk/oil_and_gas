@@ -111,7 +111,7 @@ def IsPremium(user):
     else:
         return False
 
-def IsPremium(user):
+def IsSuperPremium(user):
     """
     Util function return true only if the company of user has superpremium subscription
     """
@@ -199,13 +199,13 @@ def CreateKeyClient(data_dict, user):
     kc.key_client = data_dict['key_client']
     return True
 
-def CreateKeyAlliance(data_dict, user):
+def CreateKeyAllianceUtil(key_alliance, user):
     """
     Util funcition to save the alliance from companymodel database.
     """
     ka = KeyAlliance()
     ka.company = CompanyModel.objects.get(owner=user)
-    ka.key_alliance = data_dict['key_alliance']
+    ka.key_alliance = CompanyModel.objects.get(company_name=key_alliance)
     ka.save()
     return True
 
@@ -248,6 +248,7 @@ def CreateSocialLinkUtil(data_dict, user):
 
 ################################ Super Premium Fields Start #######################################
 
+
 def PublicationUtil(data_dict, user):
     """
     Util functio to save the Published articles of the company.
@@ -259,6 +260,17 @@ def PublicationUtil(data_dict, user):
     p.save()
     return True
 
+
+
+
+
+################################ Super Premium Fields End #######################################
+
+
+
+################################ Requirement Start #######################################
+
+
 def PostRequirementUtil(data_dict, user):
     """
     Util function to save the requirement posted by companies
@@ -269,3 +281,15 @@ def PostRequirementUtil(data_dict, user):
     r.req_detail = data_dict['req_detail']
     r.save()
     return True
+
+def IsRequirementSubscribed(user):
+    """
+    Util function return return True if the user is subscribed to view the requirement.
+    """
+    c = CompanyModel.objects.get(owner=user)
+    if c.is_req_sub_active:
+        return True
+    else:
+        return False
+
+################################ Requirement End #######################################

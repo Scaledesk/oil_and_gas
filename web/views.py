@@ -225,7 +225,38 @@ def VideoLink(request):
             error = current_form.errors.values()[0]
     return render(request, 'premium/video_link.html', context = {'form':current_form, 'error':error})
 
-#KeyAlliance to be defined here
+
+
+def SearchAlliance(request):
+    search_qs = CompanyModel.objects.filter(is_approved=True)
+    results = []
+    for r in search_qs:
+        results.append(r.company_name)
+    # pprint(str(request.GET['callback']))
+    # resp = request.GET['callback'] + '(' + simplejson.dumps(results) + ');'
+    resp = simplejson.dumps(results)
+    pprint(resp)
+    return HttpResponse(resp, content_type='application/json')
+
+
+@login_required
+def Alliance(request):
+    if not IsPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
+    # current_form = None
+    # error = None
+    if request.method == 'POST':
+        company_name = request.POST['company_name']
+        if KeyAlliance.objects.filter(key_alliance=CompanyModel.objects.filter(company_name=company_name)):
+            return HttpResponse('Alliance is already saved in the database')
+        if CompanyModel.objects.get(owner=request.user).company_name==company_name:
+            return HttpResponse('You can no form alliance with your own company')
+        else:
+            if CreateKeyAllianceUtil(company_name, request.user):
+                return HttpResponse('Alliance has been saved in the database')
+            else:
+                return HttpResponse('Server Error')
+    return render(request, 'premium/alliance.html', context=None)
 
 @login_required
 def Location(request):
@@ -269,7 +300,7 @@ def Certification(request):
 
 @login_required
 def SocialLink(request):
-    if not IsPremium(request.user):
+    if not IsSuperPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
         
     current_form = None
@@ -290,6 +321,8 @@ def SocialLink(request):
 
 @login_required
 def Publication(request):
+    if not IsSuperPremium(request.user):
+        return HttpResponse('This will require premium subscription or super-premium subscription')
     error = None
     current_form = None
     if request.method == 'GET':
