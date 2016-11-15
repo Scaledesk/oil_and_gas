@@ -30,6 +30,11 @@ urlpatterns = [
     
     #Super PremiumFields
     url(r'^publication', Publication),
+    # url(r'^country', Country),
+
+    #Requirement
+    url(r'post_requirement', PostRequirement),
 
     url(r'^test', Test),
+
     ]

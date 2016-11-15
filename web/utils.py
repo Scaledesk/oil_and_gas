@@ -258,3 +258,14 @@ def PublicationUtil(data_dict, user):
     p.pub_content = data_dict['pub_content']
     p.save()
     return True
+
+def PostRequirementUtil(data_dict, user):
+    """
+    Util function to save the requirement posted by companies
+    """
+    r = Requirement()
+    r.company = CompanyModel.objects.get(owner=user)
+    r.req_heading = data_dict['req_heading']
+    r.req_detail = data_dict['req_detail']
+    r.save()
+    return True

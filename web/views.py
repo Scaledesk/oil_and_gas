@@ -302,8 +302,40 @@ def Publication(request):
             else:
                 return HttpResponse('server error')
         else:
-            error = pf.errors.values()[0]
+            error = current_form.errors.values()[0]
     return render(request, 'super_premium/publication.html', context={'form':current_form, 'error':error})
+
+# @login_required
+# def Country(request):
+#     current_form = None
+#     Error = None
+#     if request.method == 'GET':
+#         pass
+
+#     if request.method == 'POST':
+#         pass
+
+#     return render(request, 'super_premium/country.html' context = {'error':error, 'form':current_form})
+
+
+
+@login_required
+def PostRequirement(request):
+    error = None
+    current_form = None
+    if request.method == 'GET':
+        current_form = PostRequirementForm()
+
+    if request.method == 'POST':
+        current_form = PostRequirementForm(request.POST)
+        if current_form.is_valid():
+            if PostRequirementUtil(current_form.cleaned_data, request.user):
+                return HttpResponse('Requirement has been posted')
+            else:
+                return HttpResponse('server error')
+        else:
+            error = current_form.error.values()[0]
+    return render(request, 'requirement/post_requirement.html', {'error':error, 'form':current_form})
 
 
 def Test(request):

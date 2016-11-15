@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 import datetime
 from test_sub.settings import SERIALIZABLE_VALUE
-
+import pycountry # for help :- https://pypi.python.org/pypi/pycountry
 
 class BaseModel(models.Model):
     """Base class for all the models"""
@@ -175,7 +175,7 @@ class SocialLink(BaseModel):
 #### PREMIUM SUBSCRIPTION FIELDS END #####
 
 
-# ########################## SUPER PREMIUM FIELDS ###############################
+######################### SUPER PREMIUM FIELDS ###############################
 
 class Publication(BaseModel):
     PUB_TYPE=(
@@ -185,3 +185,35 @@ class Publication(BaseModel):
     company = models.ForeignKey(CompanyModel)
     pub_type = models.CharField(max_length=1, choices=PUB_TYPE)
     pub_content = models.CharField(max_length=2000)
+
+# class Country(BaseModel):
+#     # A country field for Django models that provides all ISO 3166-1 countries as choices.
+#     company = models.ForeignKey(CompanyModel)
+#     country = 
+
+########################### SUPER PREMIUM FIELDS ################################
+
+class Requirement(BaseModel):
+    company = models.ForeignKey(CompanyModel)
+    req_heading = models.CharField(max_length=100)
+    req_detail = models.CharField(max_length=2000)
+
+class ReqSubscriptionPlan(BaseModel):
+    plan_name = models.FloatField(unique=True)
+
+    free_price = models.FloatField()
+    premium_price = models.FloatField()
+    super_premium_price = models.FloatField()
+
+    free_discount = models.FloatField()
+    premium_discount = models.FloatField()
+    super_premium_discount = models.FloatField()
+
+class ReqViewSubscription(object):
+    """docstring for ReqViewSubscription"""
+    company = models.ForeignKey(CompanyModel, unique=True)
+    sub_plan = models.ForeignKey(SubscriptionPlan)    
+    is_subscribed = models.BooleanField(default=False)
+    sub_begin_date =  models.DateField(default=datetime.date.today)
+    sub_end_date = models.DateField(default=datetime.date.today)
+    is_sub_active = models.BooleanField(default=False)

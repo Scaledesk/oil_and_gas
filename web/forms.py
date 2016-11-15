@@ -176,8 +176,7 @@ class CreateCompanyForm(BaseForm):
         ('W', 'Website'),
         ('A', 'Advertisement'),
         ('S', 'Social Media'),
-        ('O', 'Other'),
-    )
+        ('O', 'Other'),)
 
     company_name = forms.CharField(max_length=150)
     company_email = forms.CharField(max_length=150)
@@ -253,17 +252,18 @@ class SocialLinkForm(BaseForm):
     twitter = forms.URLField(required=False, label="Twitter Link:")
     linkedin = forms.URLField(required=False, label="Linkedin:")
 
-
-
+#### Super Premium Subscription Form ####
 class PublicationForm(BaseForm):
     PUB_TYPE = (
         ('A', 'Article'),
-        ('P', 'Patent'),
-        )
-
+        ('P', 'Patent'),)
     pub_type = forms.ChoiceField(choices=PUB_TYPE)
     pub_content = forms.CharField(max_length=2000)
 
+class PostRequirementForm(BaseForm):
+    """Form to post the requirements"""
+    req_heading = forms.CharField(max_length=100)
+    req_detail = forms.CharField(max_length=2000)
 
 # class LoginUserForm(BaseForm):
 #     """
