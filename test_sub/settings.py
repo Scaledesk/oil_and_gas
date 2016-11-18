@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'core',
     'web',
     'widget_tweaks',
+    'constance',
 ]
 
 MIDDLEWARE = [
@@ -78,12 +79,24 @@ WSGI_APPLICATION = 'test_sub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'oil_and_gas',
+        'USER': 'root',
+        'PASSWORD': 'as',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
+
 
 
 # Password validation
@@ -135,3 +148,34 @@ LOGIN_URL = '/web/login/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/static/media/'
 
+# free_price = models.FloatField()
+#     premium_price = models.FloatField()
+#     super_premium_price = models.FloatField()
+
+#     free_discount = models.FloatField()
+#     premium_discount = models.FloatField()
+#     super_premium_discount = models.FloatField()
+
+
+CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True
+
+# CONSTANCE_CONFIG = {
+#     'THE_ANSWER': (42, 'Answer to the Ultimate Question of Life'),
+# }
+
+
+# 'THE_ANSWER': (42, 'Answer to the Ultimate Question of Life, '
+#                            'The Universe, and Everything', str),
+
+CONSTANCE_CONFIG = {
+    'PREMIUM_PRICE':(None, 'Premium rate per month', float),
+    'SUPER_PREMIUM_PRICE':(None, 'Super Premium rate per month', float),
+    'PREMIUM_DISCOUNT':(0, 'Premium Discount', float),
+    'SUPER_PREMIUM_DISCOUNT':(0, 'Super Premium Discount', float),
+}
+
+
+CONSTANCE_CONFIG_FIELDSETS = {
+    'Premium': ('PREMIUM_PRICE', 'SUPER_PREMIUM_PRICE'),
+    'Theme Options': ('PREMIUM_DISCOUNT','SUPER_PREMIUM_DISCOUNT'),
+}
