@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response, HttpResponse, Http404
+from django.shortcuts import render, render_to_response, HttpResponse, Http404, redirect
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
@@ -13,13 +13,19 @@ from core.models import *
 
 
 def Landing(request):
-    context=None
+    context={}
+    if request.GET.get('status') == "logout":
+        context['message'] = ("Logout Successful")
     return render(request, 'landing.html', context=context)
+
 
 @login_required
 def Dashboard(request):
-    context=None
+    context={}
+    if request.GET.get('status') == 'login':
+        context['message'] = "Login Sucessful"
     return render(request, 'dashboard.html', context=context)
+
 @login_required
 def AccountSetting(request):
     pass
@@ -31,9 +37,11 @@ def Login(request):
         next = request.GET.get('next', '/')
         user_email = request.POST['user_email']
         password = request.POST['password']
-        user = authenticate(username=user_email, password=password)        
+        user = authenticate(username=user_email, password=password)
         if user is not None:
             login(request, user)
+            if next == '/':
+                return redirect('/web/dashboard/?status=login')
             return HttpResponseRedirect(next)
         else:
             error = 'Incorrect Email or Password'
@@ -42,12 +50,12 @@ def Login(request):
     else:
         return render(request, "login.html", {'next': next})
 
-@login_required
+# @login_required
 def Logout(request):
     logout(request)
+    return redirect('/web/landing/?status=logout')
     LogoutMessage="Logout Successful"
-    return HttpResponse('logout sucessful')
-    return render(request, 'login.html',
+    return render(request, 'landing.html',
                   context={'message':LogoutMessage})
 
 def SearchCompany(request):
@@ -138,7 +146,7 @@ def FreeField(request):
             else:
                 return Http404
         else:
-            error = current_form.errors.values()[0]            
+            error = current_form.errors.values()[0]
     return render(request, 'free/free_field.html', context = {'form':current_form, 'error':error})
 
 
@@ -148,7 +156,7 @@ def FreeField(request):
 def BasicPremiumField(request):
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
-    
+
     current_form = None
     error = None
     if request.method == 'GET':
@@ -302,7 +310,7 @@ def Certification(request):
 def SocialLink(request):
     if not IsSuperPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
-        
+
     current_form = None
     error = None
     if request.method == 'GET':

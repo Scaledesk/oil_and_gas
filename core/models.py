@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 import datetime
 from test_sub.settings import SERIALIZABLE_VALUE
 import pycountry # for help :- https://pypi.python.org/pypi/pycountry
+from pprint import pprint
+
 
 class BaseModel(models.Model):
     """Base class for all the models"""
@@ -39,17 +41,23 @@ class UserProfile(BaseModel):
         ('M', 'Male'),
         ('F', 'Female'),
         ('O', 'Other'))
-            
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     dob = models.DateField()
     user_phone_no = models.CharField(max_length=10)
-    
+
     class Meta:
         verbose_name = 'User Profile'
         verbose_name_plural = 'User Profiles'
     def __unicode__(self):
         return self.user.email
+
+    # def save(self, *args, **kwargs):
+    #     pprint(self.all())
+    #     return False
+
+
 
 class SubscriptionPlan(BaseModel):
     """Model to hold the detail of plans only. It will be accesible to admin only"""
@@ -57,11 +65,11 @@ class SubscriptionPlan(BaseModel):
     SUBSCRIPTION_OPTIONS = (
         ('F', 'Free'),
         ('P', 'Premium'),
-        ('S', 'Super Premium'),)    
-    sub_type = models.CharField(max_length=4, choices=SUBSCRIPTION_OPTIONS, unique=True)
+        ('S', 'Super Premium'),)
+    sub_type = models.CharField(max_length=1, choices=SUBSCRIPTION_OPTIONS, unique=True)
     cost_per_month = models.FloatField()
     discount = models.FloatField(default=0)
-    
+
     class Meta:
         verbose_name = 'Subscription Plan'
         verbose_name_plural = 'Subscription Plans'
@@ -116,8 +124,8 @@ class CompanyModel(BaseModel):
     company_phone_no = models.CharField(max_length=10,blank=False)
     ad_reference = models.CharField(max_length=1,choices=WHERE_YOU_HEARD_ABT_US_CHOICES, default='A')
     is_claimed = models.BooleanField(default=False)
-    is_approved = models.BooleanField(default=False) 
-    
+    is_approved = models.BooleanField(default=False)
+
     #Company Subscription
     sub_plan = models.ForeignKey(SubscriptionPlan)
     sub_begin_date =  models.DateField(default=datetime.date.today)
@@ -147,7 +155,7 @@ class ClaimCompanyRequest(BaseModel):
     class Meta:
         verbose_name = 'Company Claim Requiest'
         verbose_name_plural = 'Company Claim Requests'
-    
+
     def __unicode__(self):
         return (self.user.email + " | " + self.company.company_name)
 
@@ -168,6 +176,12 @@ class FreeField(BaseModel):
         verbose_name = 'Free Field'
         verbose_name_plural = 'Free Fields'
 
+    def save(self, *args, **kwargs):
+        """ Override FreeField's save """
+        pprint (self.all())
+        self.full_clean(exclude=None)
+        super(ReqSubscriptionPlan, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return (self.company.company_name)
 
@@ -176,9 +190,9 @@ class BasicPremiumField(BaseModel):
     """Model to save premium fields"""
 
     company = models.OneToOneField(CompanyModel, on_delete=models.CASCADE)
-    logo = models.ImageField(upload_to='company_logo/', default=None, blank=True) 
+    logo = models.ImageField(upload_to='company_logo/', default=None, blank=True)
     registration_no = models.CharField(max_length=12, default=None, blank=True)
-    no_of_emp = models.IntegerField(default=None, blank=True)
+    no_of_emp = models.PositiveIntegerField(default=None, blank=True)
     sale_volume = models.CharField(max_length=30, default=None, blank=True)
 
     class Meta:
@@ -204,7 +218,7 @@ class Gallery(BaseModel): #10
 class Brochure(BaseModel):
     """Model to save company brochure. Max Limit = 2"""
 
-    company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE) 
+    company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     brochure = models.FileField(upload_to='company_brouchure/')
 
     class Meta:
@@ -216,7 +230,7 @@ class Brochure(BaseModel):
 class VideoLink(BaseModel):
     """Model to save video links for premium subscription. Max limit 2"""
 
-    company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE) 
+    company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     video_link = models.CharField(max_length=200)
 
     class Meta:
@@ -319,7 +333,7 @@ class Requirement(BaseModel):
     company = models.ForeignKey(CompanyModel)
     req_heading = models.CharField(max_length=100)
     req_detail = models.CharField(max_length=2000)
-    
+
     class meta:
         verbose_name = 'Requirement'
         verbose_name_plural = 'Requirements'

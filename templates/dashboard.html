@@ -7,6 +7,16 @@
 
 <hi>This is Dashboard page</h1>
 <br><br>
+
+{% if message %}
+<p style="color:green; font-size:125%">{{ message }}</p>
+{% endif %}
+
+{% if error %}
+<p style="color:red; font-size:125%">{{ error }}</p>
+{% endif %}
+
+<br><br>
 <a href="/web/logout">Logout</a><br><br>
 <a href="/web/dashboard">Dashboard</a><br><br><br><br>
 <a href="/web/free_field">Free Fields</a><br><br><br><br>
