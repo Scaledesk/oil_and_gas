@@ -13,6 +13,7 @@ from core.models import *
 
 
 def Landing(request):
+    """Landing page"""
     context={}
     if request.GET.get('status') == "logout":
         context['message'] = ("Logout Successful")
@@ -21,6 +22,7 @@ def Landing(request):
 
 @login_required
 def Dashboard(request):
+    """Dashboard Page"""
     context={}
     if request.GET.get('status') == 'login':
         context['message'] = "Login Sucessful"
@@ -28,9 +30,11 @@ def Dashboard(request):
 
 @login_required
 def AccountSetting(request):
+    """view to render account setting apge"""
     pass
 
 def Login(request):
+    """view to handle incoming login request"""
     if request.method == 'GET':
         next = request.GET.get('next', '/')
     if request.method == "POST":
@@ -52,6 +56,7 @@ def Login(request):
 
 # @login_required
 def Logout(request):
+    """view to handle the incoming logout requst"""
     logout(request)
     return redirect('/web/landing/?status=logout')
     LogoutMessage="Logout Successful"
@@ -59,6 +64,7 @@ def Logout(request):
                   context={'message':LogoutMessage})
 
 def SearchCompany(request):
+    """view to handle the ajax request when user search for the company to claim"""
     search_qs = CompanyModel.objects.filter(is_claimed=False, is_approved=True)
     results = []
     for r in search_qs:
@@ -70,6 +76,7 @@ def SearchCompany(request):
     return HttpResponse(resp, content_type='application/json')
 
 def CreateUserAndClaimCompany(request):
+    """view to handle the request to create user and to save a company claim request"""
     user_form = None
     if request.method == 'GET':
         user_form = CreateUserForm()
@@ -89,6 +96,7 @@ def CreateUserAndClaimCompany(request):
     return render(request, 'create_user_and_claim_company.html', context)
 
 def CreateUserAndCompany(request):
+    """veiw to create new usear and new company when company do not exist in database"""
     current_form = None
     context = None
     error = None
@@ -149,11 +157,9 @@ def FreeField(request):
             error = current_form.errors.values()[0]
     return render(request, 'free/free_field.html', context = {'form':current_form, 'error':error})
 
-
-
-
 @login_required
 def BasicPremiumField(request):
+    """view to handle the premium fields"""
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
 
@@ -174,6 +180,7 @@ def BasicPremiumField(request):
 
 @login_required
 def Gallery(request):
+    """ view to handle the gallery images """
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
 
@@ -194,6 +201,7 @@ def Gallery(request):
 
 @login_required
 def Brochure(request):
+    """ view to save the company brochure """
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
 
@@ -215,6 +223,7 @@ def Brochure(request):
 
 @login_required
 def VideoLink(request):
+    """view to save the video links """
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
 
@@ -236,6 +245,7 @@ def VideoLink(request):
 
 
 def SearchAlliance(request):
+    """ view to render companies in the database on ajax request when user search for companies to form alliances """
     search_qs = CompanyModel.objects.filter(is_approved=True)
     results = []
     for r in search_qs:
@@ -249,6 +259,7 @@ def SearchAlliance(request):
 
 @login_required
 def Alliance(request):
+    """view to save the company's alliance to other company already in the database """
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
     # current_form = None
@@ -268,6 +279,7 @@ def Alliance(request):
 
 @login_required
 def Location(request):
+    """view to save the location of company"""
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
 
@@ -288,6 +300,7 @@ def Location(request):
 
 @login_required
 def Certification(request):
+    """" view to save the certification of the company """
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
 
@@ -308,6 +321,7 @@ def Certification(request):
 
 @login_required
 def SocialLink(request):
+    """view to save the social media links of the company"""
     if not IsSuperPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
 
@@ -329,6 +343,7 @@ def SocialLink(request):
 
 @login_required
 def Publication(request):
+    """view to save the published articles of the company"""
     if not IsSuperPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
     error = None
@@ -362,6 +377,7 @@ def Publication(request):
 
 @login_required
 def PostRequirement(request):
+    """view to save the requirement posted by the company"""
     error = None
     current_form = None
     if request.method == 'GET':
@@ -380,6 +396,7 @@ def PostRequirement(request):
 
 
 def Test(request):
+    """This is just for testing dummy code. This is for testing purpose only"""
     if request.method == 'GET':
         return render(request, 'test.html', context=None)
     if request.method=='POST':

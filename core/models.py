@@ -9,6 +9,7 @@ from test_sub.settings import SERIALIZABLE_VALUE
 import pycountry # for help :- https://pypi.python.org/pypi/pycountry
 from pprint import pprint
 
+from core.model_validations import *
 
 class BaseModel(models.Model):
     """Base class for all the models"""
@@ -178,7 +179,10 @@ class FreeField(BaseModel):
 
     def save(self, *args, **kwargs):
         """ Override FreeField's save """
-        pprint (self.all())
+        # if validate_free_fields(self):
+        #     pprint(self)
+        #     return True
+        # return True
         self.full_clean(exclude=None)
         super(ReqSubscriptionPlan, self).save(*args, **kwargs)
 

@@ -5,9 +5,7 @@ from core.models import CompanyModel, UserProfile
 from pprint import pprint
 
 class BaseForm(forms.Form):
-    """
-    Base form for all the forms in EMS
-    """
+    """Base form for all the forms in EMS"""
     def is_phone_no_invalid(self, phone_number):
         """ Util function for validating phone number """
         return ((not str(phone_number).isdigit()) or (len(phone_number)!=10))
@@ -48,9 +46,7 @@ class BaseForm(forms.Form):
 
 
 class CreateUserAndCompanyForm(BaseForm):
-    """
-    Form for user registration/creating account
-    """
+    """Form for user registration/creating account"""
 
 
     # USER #
@@ -113,11 +109,11 @@ class CreateUserAndCompanyForm(BaseForm):
         # COMPANY #
         if self.company_email_already_exists(cleaned_data['company_email']):
             raise forms.ValidationError('Company Email Id provided already exists in database. Use different Email Id')
-        
+
 
         if self.is_phone_no_invalid(cleaned_data['company_phone_no']):
             raise forms.ValidationError('The Company phone number provided is invalid')
-        
+
         if self.company_phone_no_already_exists(cleaned_data['company_phone_no']):
             raise forms.ValidationError('The Company phone number provided already exist in database')
 
@@ -126,9 +122,7 @@ class CreateUserAndCompanyForm(BaseForm):
 
 
 class CreateUserForm(BaseForm):
-    """
-    Form for user registration/creating account
-    """
+    """Form for user registration/creating account"""
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
@@ -171,6 +165,7 @@ class CreateUserForm(BaseForm):
             return cleaned_data
 
 class CreateCompanyForm(BaseForm):
+    """ Form to create company """
     WHERE_YOU_HEARD_ABT_US_CHOICES = (
         ('B', 'Blog'),
         ('W', 'Website'),
@@ -184,9 +179,7 @@ class CreateCompanyForm(BaseForm):
     where_heard_abt_us = forms.ChoiceField(choices=WHERE_YOU_HEARD_ABT_US_CHOICES)
 
     def clean(self, *args, **kwargs):
-        """
-        Clean function
-        """
+        """Clean function"""
         cleaned_data = super(CreateCompanyForm, self).clean()
 
         pprint(cleaned_data)
@@ -203,6 +196,7 @@ class CreateCompanyForm(BaseForm):
 #### Free Subscription Form ####
 
 class FreeFieldForm(BaseForm):
+    """Form to input the free subscription fields for a company """
     address = forms.CharField(max_length=120, label="Address Line 1:", required=False)
     city = forms.CharField(max_length=30, label="City:", required=False)
     pin = forms.CharField(max_length=6, label="pin", required=False)
@@ -217,6 +211,7 @@ class FreeFieldForm(BaseForm):
 #### Premium Subscription Form ####
 
 class BasicPremiumFieldForm(BaseForm):
+    """ Form to save the basic premium fields of the company"""
     logo = forms.ImageField(required=False, label="Company logo:")
     registration_no = forms.CharField(max_length=12, label="Company registration No:", required=False)
     bio = forms.CharField(max_length=1000, label="Company bio:", required=False)
@@ -224,36 +219,44 @@ class BasicPremiumFieldForm(BaseForm):
     sale_volume = forms.CharField(max_length=30, label="Sale volume:", required=False)
 
 class GalleryForm(BaseForm):
+    """Form for the images of gallary of the company"""
     image = forms.ImageField(required=False, label="Image:")
 
 class BrochureForm(BaseForm):
+    """Form for the brochures of the company """
     brochure = forms.FileField(required=False, label="Company Brochure:")
 
 class VideoLinkForm(BaseForm):
+    """Form for the video link of the company"""
     video_link = forms.URLField(label="video_link:", required=False)
 
 class KeyClient(BaseForm):
+    """Form for the key clients of the company"""
     key_client = forms.CharField(max_length=150, label="Key Client:")
 
 # class KeyAlliance(BaseModel):
 
 
 class LocationForm(BaseForm):
+    """Form to save the different locations of the company"""
     location_type = forms.CharField(max_length=30, label="Location Type:", required=False)
     location = forms.CharField(max_length=200, label="Location:", required=False)
 
 class CertificationForm(BaseForm):
+    """Form for the different certificates of company"""
     certi_name = forms.CharField(max_length=100, label="Certification name:", required=False)
     certi_description = forms.CharField(max_length=200, label="Certificatio description:", required=False)
     certi_doc = forms.FileField(required=False, label="Certification Document")
 
 class SocialLinkForm(BaseForm):
+    """Form for the Social Links of the company"""
     facebook = forms.URLField(required=False, label="Facebook Link:")
     twitter = forms.URLField(required=False, label="Twitter Link:")
     linkedin = forms.URLField(required=False, label="Linkedin:")
 
 #### Super Premium Subscription Form ####
 class PublicationForm(BaseForm):
+    """Form for the published articles of the company"""
     PUB_TYPE = (
         ('A', 'Article'),
         ('P', 'Patent'),)
@@ -261,7 +264,7 @@ class PublicationForm(BaseForm):
     pub_content = forms.CharField(max_length=2000)
 
 class PostRequirementForm(BaseForm):
-    """Form to post the requirements"""
+    """Form to post the requirements of the company"""
     req_heading = forms.CharField(max_length=100)
     req_detail = forms.CharField(max_length=2000)
 

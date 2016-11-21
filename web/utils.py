@@ -127,8 +127,6 @@ def CreateFreeFieldUtil(data_dict, user):
     """
     Util function to save Free Fields
     """
-    pprint(str(user))
-    pprint(str(data_dict))
     ff=FreeField()
     ff.company = CompanyModel.objects.get(owner=user)
     ff.address = data_dict['address']

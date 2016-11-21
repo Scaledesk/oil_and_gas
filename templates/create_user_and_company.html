@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label for="password">Confirm Password:</label>
                 {{ form.confirm_password|attr:"class:form-control"|attr:"type:password"|attr:"required:true"|attr:"autocomplete:off" }}
-                
+
             </div>
 
 
@@ -90,15 +90,10 @@
 
             <div class="text-center">
                 Already Registered ?<br/>
-                <p ><a href="/">Click Here to Login</a></p>
+                <p ><a href="/web/login/">Click Here to Login</a></p>
             </div>
             {% csrf_token %}
         </form>
 
     </div>
     {% endblock %}
-
-
-
-
-
