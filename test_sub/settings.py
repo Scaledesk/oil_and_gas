@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'web',
     'widget_tweaks',
     'constance',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

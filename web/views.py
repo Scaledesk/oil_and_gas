@@ -63,7 +63,7 @@ def Logout(request):
     return render(request, 'landing.html',
                   context={'message':LogoutMessage})
 
-def SearchCompany(request):
+def GetCompany(request):
     """view to handle the ajax request when user search for the company to claim"""
     search_qs = CompanyModel.objects.filter(is_claimed=False, is_approved=True)
     results = []
@@ -250,8 +250,6 @@ def SearchAlliance(request):
     results = []
     for r in search_qs:
         results.append(r.company_name)
-    # pprint(str(request.GET['callback']))
-    # resp = request.GET['callback'] + '(' + simplejson.dumps(results) + ');'
     resp = simplejson.dumps(results)
     pprint(resp)
     return HttpResponse(resp, content_type='application/json')
@@ -361,20 +359,6 @@ def Publication(request):
             error = current_form.errors.values()[0]
     return render(request, 'super_premium/publication.html', context={'form':current_form, 'error':error})
 
-# @login_required
-# def Country(request):
-#     current_form = None
-#     Error = None
-#     if request.method == 'GET':
-#         pass
-
-#     if request.method == 'POST':
-#         pass
-
-#     return render(request, 'super_premium/country.html' context = {'error':error, 'form':current_form})
-
-
-
 @login_required
 def PostRequirement(request):
     """view to save the requirement posted by the company"""
@@ -394,10 +378,26 @@ def PostRequirement(request):
             error = current_form.error.values()[0]
     return render(request, 'requirement/post_requirement.html', {'error':error, 'form':current_form})
 
+def SearchCompany(request):
+    """This is just for searching company"""
+    context=[]
+    if request.method == 'GET':
+        return render(request, 'search_company.html', context=None)
+    if request.method=='POST':
+        search_text = request.POST['search_text']
+        search_result = CompanyModel.objects.filter(company_name__contains=search_text)
+        # return HttpResponse(search_result)
+        for result in search_result:
+            company_url = ('/company/' + result.company_name.replace (" ", "_") +'/')
+            context.append({'company_name':result.company_name, 'company_url':company_url})
+        # return HttpResponse(context)
+        return render(request, 'search_company.html', context={'search_result':context})
+
 
 def Test(request):
     """This is just for testing dummy code. This is for testing purpose only"""
     if request.method == 'GET':
         return render(request, 'test.html', context=None)
     if request.method=='POST':
-        pass
+        # search_text = request.POST['search_text']
+        search_result = CompanyModel.objects.filter(company_name__contains='cheese')

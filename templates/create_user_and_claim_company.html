@@ -107,7 +107,7 @@
                         $("#company_name").keypress(function () {
                             var value_l = $("#company_name").val();
                             if (value_l.length >= 1) {
-                                $.get("/web/search_company", function (data) {
+                                $.get("/web/get_company", function (data) {
                                     var $input = $('#company_name');
                                     $input.typeahead({
                                         source: data, autoSelect: false, displayText: function (item) {
@@ -116,7 +116,7 @@
 
                                             document.getElementById("user_form").style.visibility = 'visible';
                                             document.getElementById("company_name").readOnly = true;
-                                            // document.getElementById("company_name").disabled = true;                               
+                                            // document.getElementById("company_name").disabled = true;
 
                                         }
                                     });
@@ -130,16 +130,3 @@
     {% endblock content %}
     </body>
     </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

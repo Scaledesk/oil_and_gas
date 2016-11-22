@@ -13,7 +13,7 @@ urlpatterns = [
     #Registration Functionality
     url(r'^create_user_and_claim_company/', CreateUserAndClaimCompany),
     url(r'^create_user_and_company', CreateUserAndCompany),
-    url(r'^search_company/', SearchCompany),
+    url(r'^get_company/', GetCompany),
 
     #Free
     url(r'^free_field', FreeField),
@@ -27,18 +27,20 @@ urlpatterns = [
     url(r'^alliance', Alliance),
     url(r'^search_alliance', SearchAlliance),
 
-    
+
     url(r'^location', Location),
     url(r'^certification', Certification),
     url(r'^social_link', SocialLink),
-    
+
     #Super PremiumFields
     url(r'^publication', Publication),
     # url(r'^country', Country),
 
     #Requirement
-    url(r'post_requirement', PostRequirement),
+    url(r'^post_requirement', PostRequirement),
 
-    url(r'^test', Test),
+    #Search CompanyModel
+    url(r'^search_company', SearchCompany),
 
+    # url(r'^test', Test),
     ]
