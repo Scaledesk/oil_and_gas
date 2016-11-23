@@ -41,6 +41,7 @@ urlpatterns = [
 
     #Search CompanyModel
     url(r'^search_company', SearchCompany),
+    url(r'^search-company-ajax', SearchCompanyAjax),
 
     # url(r'^test', Test),
     ]

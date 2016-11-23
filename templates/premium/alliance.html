@@ -39,7 +39,6 @@
     {% block custom_script %}
 
     <script>
-                    // document.getElementById("user_form").style.visibility = 'hidden';
                     $(document).ready(function () {
                         $("#company_name").keypress(function () {
                             var value_l = $("#company_name").val();
@@ -50,11 +49,7 @@
                                         source: data, autoSelect: false, displayText: function (item) {
                                             return item;
                                         }, afterSelect: function (current) {
-
-                                            // document.getElementById("user_form").style.visibility = 'visible';
                                             // document.getElementById("company_name").readOnly = true;
-                                            // document.getElementById("company_name").disabled = true;                               
-
                                         }
                                     });
                                 }, 'json');

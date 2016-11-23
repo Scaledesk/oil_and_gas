@@ -19,7 +19,6 @@ def Landing(request):
         context['message'] = ("Logout Successful")
     return render(request, 'landing.html', context=context)
 
-
 @login_required
 def Dashboard(request):
     """Dashboard Page"""
@@ -54,7 +53,6 @@ def Login(request):
     else:
         return render(request, "login.html", {'next': next})
 
-# @login_required
 def Logout(request):
     """view to handle the incoming logout requst"""
     logout(request)
@@ -69,10 +67,7 @@ def GetCompany(request):
     results = []
     for r in search_qs:
         results.append(r.company_name)
-    # pprint(str(request.GET['callback']))
-    # resp = request.GET['callback'] + '(' + simplejson.dumps(results) + ');'
     resp = simplejson.dumps(results)
-    pprint(resp)
     return HttpResponse(resp, content_type='application/json')
 
 def CreateUserAndClaimCompany(request):
@@ -116,29 +111,6 @@ def CreateUserAndCompany(request):
         else:
             error = current_form.errors.values()[0]
     return render(request, "create_user_and_company.html", context={'form':current_form, 'error':error})
-
-# def AddCompany(request):
-#     current_form = None
-#     context = None
-#     error = None
-
-#     if request.method == 'GET':
-#         current_form = AddCompanyForm()
-#         context = {'form':current_form}
-#         return render(request, "add_company.html", context=context)
-
-#     if request.method == 'POST':
-#         current_form =AddCompanyForm(request.POST)
-#         if current_form.is_valid():
-#             is_company_added = AddCompanyUtil(current_form.cleaned_data)
-#             if is_company_added == True:
-#                 return HttpResponse('company added')import CreateUserForm, CreateCompanyForm, CreateUserAndCompanyForm
-#             else:
-#                 HttpResponse('Server Error')
-#         else:
-#             context= {'form':current_form, 'error':error}
-#             error = current_form.errors.values()[0]
-#     return render(request, 'add_company.html',context=context)
 
 @login_required
 def FreeField(request):
@@ -220,7 +192,6 @@ def Brochure(request):
             error = current_form.errors.values()[0]
     return render(request, 'premium/brochure.html', context = {'form':current_form, 'error':error})
 
-
 @login_required
 def VideoLink(request):
     """view to save the video links """
@@ -242,8 +213,6 @@ def VideoLink(request):
             error = current_form.errors.values()[0]
     return render(request, 'premium/video_link.html', context = {'form':current_form, 'error':error})
 
-
-
 def SearchAlliance(request):
     """ view to render companies in the database on ajax request when user search for companies to form alliances """
     search_qs = CompanyModel.objects.filter(is_approved=True)
@@ -251,17 +220,13 @@ def SearchAlliance(request):
     for r in search_qs:
         results.append(r.company_name)
     resp = simplejson.dumps(results)
-    pprint(resp)
     return HttpResponse(resp, content_type='application/json')
-
 
 @login_required
 def Alliance(request):
     """view to save the company's alliance to other company already in the database """
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
-    # current_form = None
-    # error = None
     if request.method == 'POST':
         company_name = request.POST['company_name']
         if KeyAlliance.objects.filter(key_alliance=CompanyModel.objects.filter(company_name=company_name)):
@@ -280,7 +245,6 @@ def Location(request):
     """view to save the location of company"""
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
-
     current_form = None
     error = None
     if request.method == 'GET':
@@ -301,7 +265,6 @@ def Certification(request):
     """" view to save the certification of the company """
     if not IsPremium(request.user):
         return HttpResponse('This will require premium subscription or super-premium subscription')
-
     current_form = None
     error = None
     if request.method == 'GET':
@@ -337,7 +300,6 @@ def SocialLink(request):
         else:
             error = current_form.errors.values()[0]
     return render(request, 'premium/social_link.html', context = {'form':current_form, 'error':error})
-
 
 @login_required
 def Publication(request):
@@ -386,18 +348,24 @@ def SearchCompany(request):
     if request.method=='POST':
         search_text = request.POST['search_text']
         search_result = CompanyModel.objects.filter(company_name__contains=search_text)
-        # return HttpResponse(search_result)
         for result in search_result:
-            company_url = ('/company/' + result.company_name.replace (" ", "_") +'/')
+            company_url = ('/company/' + result.company_name.replace (" ", "-") +'/')
             context.append({'company_name':result.company_name, 'company_url':company_url})
-        # return HttpResponse(context)
         return render(request, 'search_company.html', context={'search_result':context})
 
+def SearchCompanyAjax(request):
+    """ view to render companies in the database on ajax request when user search for companies to form alliances """
+    search_qs = CompanyModel.objects.filter(is_approved=True)
+    results = []
+    for r in search_qs:
+        results.append(r.company_name)
+    resp = simplejson.dumps(results)
+    return HttpResponse(resp, content_type='application/json')
 
 def Test(request):
     """This is just for testing dummy code. This is for testing purpose only"""
     if request.method == 'GET':
         return render(request, 'test.html', context=None)
-    if request.method=='POST':
         # search_text = request.POST['search_text']
+    if request.method=='POST':
         search_result = CompanyModel.objects.filter(company_name__contains='cheese')

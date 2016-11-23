@@ -6,10 +6,10 @@
 {% block content %}
 <h1 class="text-center">User and Company Details</h1>
 <div class="col-md-offset-3 col-md-6">
-  <form class="form-login custom-form-login" method="post" action="/web/search_company/">
+  <form class="form-login custom-form-login" method="post" action="/web/search_company/" autocomplete="on">
     {% csrf_token %}
     <div class="inner-addon left-addon">
-      <input id="search_text" name="search_text" type="text" class="form-control" />
+      <input class="form-control" id="search_text" name="search_text" type="text" autocomplete="off"/>
     </div>
   </form>
   <br><br>
@@ -19,4 +19,38 @@
   {% endfor%}
   {% endif %}
 </div>
+
+{% block custom_script %}
+
+<script>
+                // document.getElementById("user_form").style.visibility = 'hidden';
+                $(document).ready(function () {
+                    $("#search_text").keypress(function () {
+                        var value_l = $("#search_text").val();
+                        if (value_l.length >= 1) {
+                            $.get("/web/search-company-ajax", function (data) {
+                                var $input = $('#search_text');
+                                $input.typeahead({
+                                    source: data, autoSelect: false, displayText: function (item) {
+                                        return item;
+                                    }, afterSelect: function (current) {
+
+                                      document.getElementById("search_text").disabled = true;
+                                      var text = document.getElementById('search_text').value;
+                                      text = text.replace(/\s/g, "-");
+                                      window.location.href = "/company/" + text + "/";
+
+                                        // document.getElementById("user_form").style.visibility = 'visible';
+                                        // document.getElementById("company_name").readOnly = true;
+                                        // document.getElementById("company_name").disabled = true;
+
+                                    }
+                                });
+                            }, 'json');
+                        }
+                    });
+                });
+            </script>
+
+{% endblock %}
 {% endblock %}
